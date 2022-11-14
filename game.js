@@ -1,6 +1,6 @@
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d'); //nécessaire pour dessiner dessus
-const refresh = 10;
+const refresh = 5;
 const QUEUE = 'Q';
 const EMPTY = 'E';
 const FOOD = 'F';
@@ -32,7 +32,15 @@ function drawGame(){
 
     refreshWorld();
     drawWorld();
+    moveSnake();
     setTimeout(drawGame, 1000/refresh);
+
+}
+
+function moveSnake() {
+
+    if (yVelocity != 0) snake[0][1] = snake[0][1] + yVelocity;
+    else if (xVelocity != 0) snake[0][0] = snake[0][0] + xVelocity;
 
 }
 
@@ -79,21 +87,29 @@ function keyDown(event) {
         case 's':
         case 'S':
             snake[0][1] =  snake[0][1] + 1;
+            yVelocity = 1;
+            xVelocity = 0;
             break;
         case 'ArrowUp':
         case 'z':
         case 'Z':
             snake[0][1] =  snake[0][1] - 1;
+            yVelocity = -1;
+            xVelocity = 0;
             break;
         case 'ArrowLeft':
         case 'q':
         case 'Q':
             snake[0][0] =  snake[0][0] - 1;
+            xVelocity = -1;
+            yVelocity = 0;
             break;
         case 'ArrowRight':
         case 'd':
         case 'D':
             snake[0][0] =  snake[0][0] + 1;
+            xVelocity = 1;
+            yVelocity = 0;
             break;
         case 'Escape':
             yVelocity = 0;
