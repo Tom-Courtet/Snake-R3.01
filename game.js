@@ -23,8 +23,6 @@ function initWorld(tileCount) {
 }
 initWorld(tileCount);
 
-
-
 let snake = [[milieu,milieu]];
 
 document.body.addEventListener('keydown', keyDown);
@@ -34,16 +32,21 @@ function drawGame(){
     refreshWorld();
     drawWorld();
     moveSnake();
-
     setTimeout(drawGame, 1000/refresh);
 
 }
 
 function moveSnake() {
-    if (yVelocity !== 0) {
-        snake[0][1] = snake[0][1] + yVelocity;
+    if (yVelocity !== 0) { // en haut et en bas
+        if(snake[0][1] + yVelocity >= 0 && snake[0][1] + yVelocity < tileCount) {
+            snake[0][1] = snake[0][1] + yVelocity;
+        }
     }
-    else if (xVelocity !== 0) snake[0][0] = snake[0][0] + xVelocity;
+    else if (xVelocity !== 0) {
+        if(snake[0][0] + xVelocity >= 0 && snake[0][0] + xVelocity < tileCount) {
+            snake[0][0] = snake[0][0] + xVelocity;
+        }
+    }
 
 }
 
