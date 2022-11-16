@@ -7,6 +7,7 @@ const FOOD = 'F';
 const HEAD = 'H';
 const tileCount=25;
 const tileSize=20;
+const milieu = Math.floor(tileCount/2);
 let xVelocity=0;
 let yVelocity=0;
 
@@ -18,13 +19,13 @@ function initWorld(tileCount) {
             world[i].push(EMPTY);
         }
     }
-    world[Math.floor(tileCount/2)+1][Math.floor(tileCount/2)+1] = HEAD;
+    world[milieu][milieu] = HEAD;
 }
 initWorld(tileCount);
 
 
 
-let snake = [[Math.floor(tileCount/2)+1,Math.floor(tileCount/2)+1]];
+let snake = [[milieu,milieu]];
 
 document.body.addEventListener('keydown', keyDown);
 
@@ -39,7 +40,9 @@ function drawGame(){
 }
 
 function moveSnake() {
-    if (yVelocity !== 0) snake[0][1] = snake[0][1] + yVelocity;
+    if (yVelocity !== 0) {
+        snake[0][1] = snake[0][1] + yVelocity;
+    }
     else if (xVelocity !== 0) snake[0][0] = snake[0][0] + xVelocity;
 
 }
