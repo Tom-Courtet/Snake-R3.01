@@ -5,26 +5,26 @@ const QUEUE = 'Q';
 const EMPTY = 'E';
 const FOOD = 'F';
 const HEAD = 'H';
-const tileCount=20;
+const tileCount=25;
 const tileSize=20;
 let xVelocity=0;
 let yVelocity=0;
 
-let world = [
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY], // chaque constante = 20x20
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, HEAD, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, FOOD, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-];
+let world = [];
+function initWorld(tileCount) {
+    for(let i = 0; i < tileCount; i++) {
+        world[i] = []; // on est obligé de déclarer un nouveau tableau pour chaque case de world à i
+        for (let j = 0; j < tileCount; j++) {
+            world[i].push(EMPTY);
+        }
+    }
+    world[Math.floor(tileCount/2)+1][Math.floor(tileCount/2)+1] = HEAD;
+}
+initWorld(tileCount);
 
-let snake = [[2,1]];
 
+
+let snake = [[Math.floor(tileCount/2)+1,Math.floor(tileCount/2)+1]];
 
 document.body.addEventListener('keydown', keyDown);
 
@@ -33,14 +33,14 @@ function drawGame(){
     refreshWorld();
     drawWorld();
     moveSnake();
+
     setTimeout(drawGame, 1000/refresh);
 
 }
 
 function moveSnake() {
-
-    if (yVelocity != 0) snake[0][1] = snake[0][1] + yVelocity;
-    else if (xVelocity != 0) snake[0][0] = snake[0][0] + xVelocity;
+    if (yVelocity !== 0) snake[0][1] = snake[0][1] + yVelocity;
+    else if (xVelocity !== 0) snake[0][0] = snake[0][0] + xVelocity;
 
 }
 
@@ -48,7 +48,7 @@ function refreshWorld() {
     for(let i = 0; i < world.length; i++) {
         for (let j = 0; j < world.length; j++) {
             for(let k = 0; k < snake.length; k++) {
-                if(i == snake[k][0] && j == snake[k][1]) {
+                if(i === snake[k][0] && j === snake[k][1]) {
                     world[i][j] = HEAD;
                 } else world[i][j] = EMPTY;
             }
@@ -86,37 +86,35 @@ function keyDown(event) {
         case 'ArrowDown':
         case 's':
         case 'S':
-            snake[0][1] =  snake[0][1] + 1;
-            yVelocity = 1;
             xVelocity = 0;
+            yVelocity = 1;
             break;
         case 'ArrowUp':
         case 'z':
         case 'Z':
-            snake[0][1] =  snake[0][1] - 1;
-            yVelocity = -1;
             xVelocity = 0;
+            yVelocity = -1;
+
             break;
         case 'ArrowLeft':
         case 'q':
         case 'Q':
-            snake[0][0] =  snake[0][0] - 1;
-            xVelocity = -1;
             yVelocity = 0;
+            xVelocity = -1;
+
             break;
         case 'ArrowRight':
         case 'd':
         case 'D':
-            snake[0][0] =  snake[0][0] + 1;
-            xVelocity = 1;
             yVelocity = 0;
+            xVelocity = 1;
+
             break;
         case 'Escape':
             yVelocity = 0;
             xVelocity = 0;
             break;
         default:
-            console.log(event.key);
             break;
     }
 }
