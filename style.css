@@ -32,37 +32,58 @@
   font-family: "Creators font";
   src: url("Fonts/InsaniBurger/Insanibc.ttf");
 }
-/* ---------------------------------------------------------------------------------------------------------------------------------- */
+
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Header css */
+/* ---------------------------------------------------------------------------------------------------------------------------------- */
+
 header {
   display: flex;
-  align-items: center;
   flex-direction: row;
-  background-color: var(--anti-flash-white);
+  align-items: center;
+  justify-content: space-between;
   height: 10vh;
   width: 100%;
+  background: linear-gradient(#23ad5c, var(--ufo-green));
   overflow: clip;
-  justify-content: space-between;
 }
 
-.title {
-  font-family: "Snake font";
-  font-size: 23px;
-  letter-spacing: 4px;
-  background-color: var(--watermelon);
+#title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: auto;
+  width: 33vw;
+  font-family: "Snake font";
+  font-size: 25px;
+  letter-spacing: 4px;
 }
 #creators {
   font-family: "Creators font";
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-left: 1%;
+  align-items: flex-start;
+  width: 33vw;
+  justify-content: flex-start;
 }
+.creators {
+  margin-left: 20px;
+}
+
 #dm-button {
-  padding-right: 1%;
+  width: 33vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 20px;
 }
+
+.block {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1fr;
+}
+
 /* _________________________________________________________________________________________________ */
 /* Bouton dark mode */
 /* Récupéré depuis l'exercice 1 du TD2 en JS */
@@ -110,8 +131,9 @@ i {
 /* _________________________________________________________________________________________________ */
 
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Body css */
+/* ---------------------------------------------------------------------------------------------------------------------------------- */
+
 body {
   margin: 0;
   display: flex;
@@ -128,8 +150,9 @@ body {
   background-color: #70a1ff;
 }
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Footer css */
+/* ---------------------------------------------------------------------------------------------------------------------------------- */
+
 footer {
   background-color: yellow;
   height: 7.5vh;
