@@ -25,19 +25,19 @@
 /* Title font */
 @font-face {
   font-family: "Snake font";
-  src: url("Fonts/Brakes/Brakes.ttf") format("truetype");
+  src: url("../Fonts/Brakes/Brakes.ttf") format("truetype");
 }
 /* Creators font */
 @font-face {
   font-family: "Creators font";
-  src: url("Fonts/InsaniBurger/Insanibc.ttf");
+  src: url("../Fonts/InsaniBurger/Insanibc.ttf");
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Header css */
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
-header {
+.container-h {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -87,12 +87,6 @@ header {
 /* _________________________________________________________________________________________________ */
 /* Bouton dark mode */
 /* Récupéré depuis l'exercice 1 du TD2 en JS */
-.container {
-  height: 100vh;
-}
-.container-change {
-  background-color: #cbe6ff;
-}
 
 #switch {
   width: 4rem;
@@ -102,20 +96,13 @@ header {
   border-radius: 1rem;
   position: relative;
 }
-#switch-change {
-  background-color: #61b3ff;
-  border: 1px solid #61b3ff;
-}
+
 .btn {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
   background-color: white;
   position: absolute;
-}
-.btn-change {
-  right: -1px;
-  left: auto;
 }
 
 i {
@@ -124,10 +111,7 @@ i {
   color: lightgray;
   top: 0.5rem;
 }
-.icone-change {
-  left: 0.5rem;
-  color: yellow;
-}
+
 /* _________________________________________________________________________________________________ */
 
 /* ---------------------------------------------------------------------------------------------------------------------------------- */

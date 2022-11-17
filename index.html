@@ -8,11 +8,16 @@
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
     />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      id="css-link"
+      rel="stylesheet"
+      type="text/css"
+      href="CSS/light-mode.css"
+    />
     <link rel="icon" href="logo.png" />
     <title>Snake</title>
   </head>
-  <header>
+  <header class="container-h">
     <section id="creators" class="block-h">
       <span class="creators">Elliot CURVAT</span>
       <span class="creators">Tom COURTET</span>
@@ -27,7 +32,7 @@
       </div>
     </section>
   </header>
-  <body>
+  <body class="container-b">
     <div class="canvas">
       <canvas id="board" width="500" height="500"></canvas>
     </div>
@@ -35,7 +40,7 @@
   </body>
 
   <!-- Footer qui contiendra le menu -->
-  <footer>
+  <footer class="container-f">
     <script src="darkmode.js"></script>
   </footer>
 </html>

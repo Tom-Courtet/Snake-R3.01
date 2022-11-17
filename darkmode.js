@@ -1,23 +1,15 @@
-console.log("ca marche");
-
 const switchBox = document.getElementById("switch");
-console.log(switchBox);
-const btn = document.querySelector(".btn");
 const icone = document.querySelector("i");
-const container = document.querySelector(".container");
-const titre = document.getElementsByTagName("h1")[0];
+const link = document.getElementById("css-link");
 
 switchBox.addEventListener("click", change);
 
 function change() {
-  btn.classList.toggle("btn-change");
-  icone.classList.toggle("icone-change");
-  icone.classList.toggle("fa-sun");
-  switchBox.classList.toggle("switch-change");
-  container.classList.toggle("container-change");
-  if (titre.textContent === "LIGTH MODE") {
-    titre.textContent = "DARK MODE";
+  if (link.href === "http://127.0.0.1:5500/snake-js-s3/CSS/light-mode.css") {
+    link.href = "CSS/dark-mode.css";
+    icone.classList = "fas fa-sun";
   } else {
-    titre.innerText = "LIGHT MODE";
+    link.href = "CSS/light-mode.css";
+    icone.classList = "fas fa-moon";
   }
 }
