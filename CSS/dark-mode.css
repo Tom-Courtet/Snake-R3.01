@@ -44,7 +44,7 @@
   justify-content: space-between;
   height: 10vh;
   width: 100%;
-  background-color: #cbe6ff;
+  background-color: var(--prestige-blue);
   overflow: clip;
 }
 
@@ -57,6 +57,7 @@
   font-family: "Snake font";
   font-size: 25px;
   letter-spacing: 4px;
+  color: var(--city-lights);
 }
 #creators {
   font-family: "Creators font";
@@ -65,6 +66,7 @@
   align-items: flex-start;
   width: 33vw;
   justify-content: flex-start;
+  color: var(--city-lights);
 }
 .creators {
   margin-left: 20px;
@@ -128,7 +130,7 @@ body {
   justify-content: space-between;
   height: 100vh;
   width: 100vw;
-  background-color: #cbe6ff;
+  background-color: var(--prestige-blue);
 }
 
 .canvas {
@@ -140,7 +142,7 @@ body {
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 footer {
-  background-color: #cbe6ff;
+  background-color: var(--prestige-blue);
   height: 7.5vh;
   width: 100%;
   display: flex;

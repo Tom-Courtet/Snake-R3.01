@@ -5,11 +5,17 @@ const QUEUE = "Q";
 const EMPTY = "E";
 const FOOD = "F";
 const HEAD = "H";
+let eColor = "lightblue";
+let hColor = "#004721";
+let fColor = "red";
 const tileCount = 25;
 const tileSize = 20;
 const milieu = Math.floor(tileCount / 2);
 let xVelocity = 0;
 let yVelocity = 0;
+let foodCount = 0;
+let xFood = 0;
+let yFood = 0;
 
 let world = [];
 function initWorld(tileCount) {
@@ -28,8 +34,14 @@ let snake = [[milieu, milieu]];
 document.body.addEventListener("keydown", keyDown);
 
 function drawGame() {
+  if (foodCount === 0) {
+    spawnFood();
+    foodCount = 1;
+    console.log("ca marche");
+  }
   refreshWorld();
   drawWorld();
+
   moveSnake();
   setTimeout(drawGame, 1000 / refresh);
 }
@@ -47,12 +59,25 @@ function moveSnake() {
   }
 }
 
+function spawnFood() {
+  xFood = Math.floor(Math.random() * tileCount);
+  yFood = Math.floor(Math.random() * tileCount);
+  console.log(xFood + " " + yFood);
+  for (let i = 0; i < snake.length; i++) {
+    if (snake[i][0] === yFood && snake[i][1] === xFood) {
+      spawnFood();
+    } else world[yFood][xFood] = FOOD;
+  }
+}
+
 function refreshWorld() {
   for (let i = 0; i < world.length; i++) {
     for (let j = 0; j < world.length; j++) {
       for (let k = 0; k < snake.length; k++) {
         if (i === snake[k][0] && j === snake[k][1]) {
           world[i][j] = HEAD;
+        } else if (i === yFood && j === xFood) {
+          world[yFood][xFood] = FOOD;
         } else world[i][j] = EMPTY;
       }
     }
@@ -67,13 +92,13 @@ function drawWorld() {
           context.fillStyle = "#00a24c";
           break;
         case "E":
-          context.fillStyle = "lightblue";
+          context.fillStyle = eColor;
           break;
         case "F":
-          context.fillStyle = "red";
+          context.fillStyle = fColor;
           break;
         case "H":
-          context.fillStyle = "#004721";
+          context.fillStyle = hColor;
           break;
         default:
           break;
