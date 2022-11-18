@@ -1,23 +1,37 @@
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
+document.body.addEventListener("keydown", keyDown);
 const refresh = 5;
+
+/* -------------------------------------------------------- */
+//CONSTANTS
+/* -------------------------------------------------------- */
 const QUEUE = "Q";
 const EMPTY = "E";
 const FOOD = "F";
 const HEAD = "H";
-let eColor = "lightblue";
-let hColor = "#004721";
-let fColor = "red";
 const tileCount = 25;
 const tileSize = 20;
 const milieu = Math.floor(tileCount / 2);
+/* -------------------------------------------------------- */
+//VARIABLES
+/* -------------------------------------------------------- */
+let eColor = "lightblue";
+let hColor = "#004721";
+let fColor = "red";
 let xVelocity = 0;
 let yVelocity = 0;
 let foodCount = 0;
 let xFood = 0;
 let yFood = 0;
-
 let world = [];
+let snake = [[milieu, milieu]];
+initWorld(tileCount);
+
+/**
+ *Initialize the world tab
+ *@param {Number} tileCount
+ */
 function initWorld(tileCount) {
   for (let i = 0; i < tileCount; i++) {
     world[i] = []; // on est obligé de déclarer un nouveau tableau pour chaque case de world à i
@@ -27,38 +41,51 @@ function initWorld(tileCount) {
   }
   world[milieu][milieu] = HEAD;
 }
-initWorld(tileCount);
 
-let snake = [[milieu, milieu]];
+/**
+ * Restart the game by refreshing the page
+ * @param {none}
+ */
+function restart_game() {
+  document.location.reload(true);
+}
 
-document.body.addEventListener("keydown", keyDown);
-
+/**
+ * Manage the game progress
+ * @param {none}
+ */
 function drawGame() {
   if (foodCount === 0) {
     spawnFood();
     foodCount = 1;
-    console.log("ca marche");
   }
   refreshWorld();
   drawWorld();
-
   moveSnake();
   setTimeout(drawGame, 1000 / refresh);
 }
 
+/**
+ * manages the snake's movements
+ * @param {none}
+ */
 function moveSnake() {
   if (yVelocity !== 0) {
     // en haut et en bas
     if (snake[0][1] + yVelocity >= 0 && snake[0][1] + yVelocity < tileCount) {
       snake[0][1] = snake[0][1] + yVelocity;
-    }
+    } else restart_game();
   } else if (xVelocity !== 0) {
     if (snake[0][0] + xVelocity >= 0 && snake[0][0] + xVelocity < tileCount) {
       snake[0][0] = snake[0][0] + xVelocity;
-    }
+    } else restart_game();
   }
 }
 
+/**
+ *Spawns food randomly
+ @param {none}
+ */
 function spawnFood() {
   xFood = Math.floor(Math.random() * tileCount);
   yFood = Math.floor(Math.random() * tileCount);
@@ -70,6 +97,10 @@ function spawnFood() {
   }
 }
 
+/**
+ * Refresh the world tab to set new values
+ * @param {none}
+ */
 function refreshWorld() {
   for (let i = 0; i < world.length; i++) {
     for (let j = 0; j < world.length; j++) {
@@ -84,6 +115,10 @@ function refreshWorld() {
   }
 }
 
+/**
+ * Draw the canvas wich show the world
+ * @param {none}
+ */
 function drawWorld() {
   for (let i = 0; i < world.length; i++) {
     for (let j = 0; j < world.length; j++) {
@@ -108,6 +143,10 @@ function drawWorld() {
   }
 }
 
+/**
+ * Set keyboard inputs
+ * @param {event} event
+ */
 function keyDown(event) {
   switch (event.key) {
     case "ArrowDown":
