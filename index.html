@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- lien pour les icône du dark mode -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    />
+    <link
+      id="css-link"
+      rel="stylesheet"
+      type="text/css"
+      href="CSS/light-mode.css"
+    />
+    <link rel="icon" href="logo.png" />
     <title>Snake</title>
-</head>
-<body>
-    <h1>Snake</h1>
-    <canvas id="board" width="500" height="500"></canvas>
+  </head>
+  <header class="container-h">
+    <section id="creators" class="block-h">
+      <span class="creators">Elliot CURVAT</span>
+      <span class="creators">Tom COURTET</span>
+    </section>
+    <section id="title" class="block-h">
+      <h1>SnakE</h1>
+    </section>
+    <section id="dm-button" class="block-h">
+      <div id="switch">
+        <i class="fas fa-moon"></i>
+        <div class="btn"></div>
+      </div>
+    </section>
+  </header>
+  <body class="container-b">
+    <div class="canvas">
+      <canvas id="board" width="500" height="500"></canvas>
+    </div>
     <script src="game.js"></script>
-</body>
+  </body>
+
+  <!-- Footer qui contiendra le menu -->
+  <footer class="container-f">
+    <script src="darkmode.js"></script>
+  </footer>
 </html>
