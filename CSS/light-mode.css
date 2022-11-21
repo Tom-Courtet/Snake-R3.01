@@ -1,36 +1,36 @@
 /* Chinese palette colors */
 :root {
-  --golden-sand: #eccc68;
-  --coral: #ff7f50;
-  --wild-watermelon: #ff6b81;
-  --peace: #a4b0be;
-  --grisaille: #57606f;
-  --orange: #ffa502;
-  --bruschetta-tomato: #ff6348;
-  --watermelon: #ff4757;
-  --bay-wharf: #747d8c;
-  --prestige-blue: #2f3542;
-  --lime-soap: #7bed9f;
-  --french-sky-blue: #70a1ff;
-  --saturated-sky: #5352ed;
-  --white: #ffffff;
-  --city-lights: #dfe4ea;
-  --ufo-green: #2ed573;
-  --clear-chill: #1e90ff;
-  --bright-greek: #3742fa;
-  --anti-flash-white: #f1f2f6;
-  --twinkle-blue: #ced6e0;
+    --golden-sand: #eccc68;
+    --coral: #ff7f50;
+    --wild-watermelon: #ff6b81;
+    --peace: #a4b0be;
+    --grisaille: #57606f;
+    --orange: #ffa502;
+    --bruschetta-tomato: #ff6348;
+    --watermelon: #ff4757;
+    --bay-wharf: #747d8c;
+    --prestige-blue: #2f3542;
+    --lime-soap: #7bed9f;
+    --french-sky-blue: #70a1ff;
+    --saturated-sky: #5352ed;
+    --white: #ffffff;
+    --city-lights: #dfe4ea;
+    --ufo-green: #2ed573;
+    --clear-chill: #1e90ff;
+    --bright-greek: #3742fa;
+    --anti-flash-white: #f1f2f6;
+    --twinkle-blue: #ced6e0;
 }
 
 /* Title font */
 @font-face {
-  font-family: "Snake font";
-  src: url("../Fonts/Brakes/Brakes.ttf") format("truetype");
+    font-family: "Snake font";
+    src: url("../Fonts/Brakes/Brakes.ttf") format("truetype");
 }
 /* Creators font */
 @font-face {
-  font-family: "Creators font";
-  src: url("../Fonts/InsaniBurger/Insanibc.ttf");
+    font-family: "Creators font";
+    src: url("../Fonts/InsaniBurger/Insanibc.ttf");
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
@@ -38,50 +38,50 @@
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 .container-h {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 10vh;
-  width: 100%;
-  background: linear-gradient(#23ad5c, var(--ufo-green));
-  overflow: clip;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+    width: 100%;
+    background: linear-gradient(#23ad5c, var(--ufo-green));
+    overflow: clip;
 }
 
 #title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: auto;
-  width: 33vw;
-  font-family: "Snake font";
-  font-size: 25px;
-  letter-spacing: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    width: 33vw;
+    font-family: "Snake font";
+    font-size: 25px;
+    letter-spacing: 4px;
 }
 #creators {
-  font-family: "Creators font";
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 33vw;
-  justify-content: flex-start;
+    font-family: "Creators font";
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 33vw;
+    justify-content: flex-start;
 }
 .creators {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 #dm-button {
-  width: 33vw;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-right: 20px;
+    width: 33vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 20px;
 }
 
 .block {
-  margin-left: auto;
-  margin-right: auto;
-  width: 1fr;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1fr;
 }
 
 /* _________________________________________________________________________________________________ */
@@ -89,27 +89,27 @@
 /* Récupéré depuis l'exercice 1 du TD2 en JS */
 
 #switch {
-  width: 4rem;
-  height: 2rem;
-  border: 1px solid #1e2939;
-  background-color: #1e2939;
-  border-radius: 1rem;
-  position: relative;
+    width: 4rem;
+    height: 2rem;
+    border: 1px solid #1e2939;
+    background-color: #1e2939;
+    border-radius: 1rem;
+    position: relative;
 }
 
 .btn {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
 }
 
 i {
-  position: absolute;
-  right: 0.5rem;
-  color: lightgray;
-  top: 0.5rem;
+    position: absolute;
+    right: 0.5rem;
+    color: lightgray;
+    top: 0.5rem;
 }
 
 /* _________________________________________________________________________________________________ */
@@ -119,29 +119,29 @@ i {
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100vh;
-  width: 100vw;
-  background-color: var(--ufo-green);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--ufo-green);
 }
 
 .canvas {
-  display: flex;
-  background-color: #70a1ff;
+    display: flex;
+    background-color: #ffffff;
 }
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Footer css */
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 footer {
-  background-color: yellow;
-  height: 7.5vh;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+    background-color: yellow;
+    height: 7.5vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

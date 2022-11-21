@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
 document.body.addEventListener("keydown", keyDown);
-const refresh = 5;
+const refresh = 7;
 
 /* -------------------------------------------------------- */
 //CONSTANTS
@@ -25,7 +25,11 @@ let foodCount = 0;
 let xFood = 0;
 let yFood = 0;
 let world = [];
-let snake = [[milieu, milieu]];
+let snake = [
+    [milieu - 2, milieu],
+    [milieu - 1, milieu],
+    [milieu, milieu],
+];
 initWorld(tileCount);
 
 /**
@@ -39,7 +43,12 @@ function initWorld(tileCount) {
             world[i].push(EMPTY);
         }
     }
+
     world[milieu][milieu] = HEAD;
+
+    world[milieu - 2][milieu] = QUEUE;
+
+    world[milieu - 1][milieu] = QUEUE;
 }
 
 /**
@@ -59,9 +68,9 @@ function drawGame() {
         spawnFood();
         foodCount = 1;
     }
-    refreshWorld();
     drawWorld();
     moveSnake();
+    refreshWorld();
     setTimeout(drawGame, 1000 / refresh);
 }
 
@@ -85,8 +94,10 @@ function moveSnake() {
                 snake[snake.length - 1][1] != xFood
             ) {
                 snake.shift();
+            } else {
+                world[xFood][yFood] = EMPTY;
+                foodCount = 0;
             }
-            console.log(snake.length);
         } else restart_game();
     } else if (xVelocity !== 0) {
         if (
@@ -102,8 +113,10 @@ function moveSnake() {
                 snake[snake.length - 1][1] != xFood
             ) {
                 snake.shift();
+            } else {
+                world[xFood][yFood] = EMPTY;
+                foodCount = 0;
             }
-            console.log(snake.length);
         } else restart_game();
     }
 }
@@ -115,7 +128,6 @@ function moveSnake() {
 function spawnFood() {
     xFood = Math.floor(Math.random() * tileCount);
     yFood = Math.floor(Math.random() * tileCount);
-    console.log(xFood + " " + yFood);
     for (let i = 0; i < snake.length; i++) {
         if (snake[i][0] === yFood && snake[i][1] === xFood) {
             spawnFood();
@@ -131,11 +143,22 @@ function refreshWorld() {
     for (let i = 0; i < world.length; i++) {
         for (let j = 0; j < world.length; j++) {
             for (let k = 0; k < snake.length; k++) {
-                if (i === snake[k][0] && j === snake[k][1]) {
+                if (
+                    i === snake[k][0] &&
+                    j === snake[k][1] &&
+                    k != snake.length - 1
+                ) {
+                    world[i][j] = QUEUE;
+                } else if (
+                    i === snake[snake.length - 1][0] &&
+                    j === snake[snake.length - 1][1]
+                ) {
                     world[i][j] = HEAD;
                 } else if (i === yFood && j === xFood) {
                     world[yFood][xFood] = FOOD;
-                } else world[i][j] = EMPTY;
+                } else {
+                    world[i][j] = EMPTY;
+                }
             }
         }
     }
@@ -212,7 +235,7 @@ function keyDown(event) {
             }
             break;
         case "Escape":
-            console.log(snake);
+            console.log(world);
             yVelocity = 0;
             xVelocity = 0;
             break;
