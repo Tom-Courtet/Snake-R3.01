@@ -81,20 +81,12 @@ function moveSnake() {
                 snake[snake.length - 1][1] + yVelocity,
             ]);
             if (
-                snake[snake.length - 1][0] === yFood &&
-                snake[snake.length - 1][1] === xFood
+                snake[snake.length - 1][0] != yFood ||
+                snake[snake.length - 1][1] != xFood
             ) {
                 snake.shift();
             }
-            console.log(
-                snake[snake.length - 1][0] +
-                    " " +
-                    snake[snake.length - 1][1] +
-                    " et pomme : " +
-                    xFood +
-                    " " +
-                    yFood
-            );
+            console.log(snake.length);
         } else restart_game();
     } else if (xVelocity !== 0) {
         if (
@@ -106,20 +98,12 @@ function moveSnake() {
                 snake[snake.length - 1][1],
             ]);
             if (
-                snake[snake.length - 1][0] === yFood &&
-                snake[snake.length - 1][1] === xFood
+                snake[snake.length - 1][0] != yFood ||
+                snake[snake.length - 1][1] != xFood
             ) {
                 snake.shift();
             }
-            console.log(
-                snake[snake.length - 1][0] +
-                    " " +
-                    snake[snake.length - 1][1] +
-                    " et pomme : " +
-                    xFood +
-                    " " +
-                    yFood
-            );
+            console.log(snake.length);
         } else restart_game();
     }
 }
