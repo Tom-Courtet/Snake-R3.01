@@ -10,8 +10,8 @@ const QUEUE = "Q";
 const EMPTY = "E";
 const FOOD = "F";
 const HEAD = "H";
-const tileCount = 25;
-const tileSize = 20;
+const tileCount = 16;
+const tileSize = 25;
 const milieu = Math.floor(tileCount / 2);
 /* -------------------------------------------------------- */
 //VARIABLES
@@ -140,28 +140,16 @@ function spawnFood() {
  * @param {none}
  */
 function refreshWorld() {
-    for (let i = 0; i < world.length; i++) {
+    for(let i = 0; i < world.length; i++) {
         for (let j = 0; j < world.length; j++) {
-            for (let k = 0; k < snake.length; k++) {
-                if (
-                    i === snake[k][0] &&
-                    j === snake[k][1] &&
-                    k != snake.length - 1
-                ) {
-                    world[i][j] = QUEUE;
-                } else if (
-                    i === snake[snake.length - 1][0] &&
-                    j === snake[snake.length - 1][1]
-                ) {
-                    world[i][j] = HEAD;
-                } else if (i === yFood && j === xFood) {
-                    world[yFood][xFood] = FOOD;
-                } else {
-                    world[i][j] = EMPTY;
-                }
-            }
+            world[i][j] = EMPTY;
         }
     }
+    for(let k = 0; k < snake.length; k++) {
+        if(k == snake.length - 1) world[snake[k][0]][snake[k][1]] = HEAD;
+        else world[snake[k][0]][snake[k][1]] = QUEUE;
+    }
+    world[yFood][xFood] = FOOD;
 }
 
 /**
