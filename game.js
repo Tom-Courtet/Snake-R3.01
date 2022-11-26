@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
 document.body.addEventListener("keydown", keyDown);
-const refresh = 7;
+const refresh = 5;
 
 /* -------------------------------------------------------- */
 //CONSTANTS
@@ -28,7 +28,7 @@ let world = [];
 let snake = [
     [milieu - 2, milieu],
     [milieu - 1, milieu],
-    [milieu, milieu],
+    [milieu, milieu]
 ];
 initWorld(tileCount);
 
@@ -59,6 +59,8 @@ function restart_game() {
     document.location.reload(true);
 }
 
+
+
 /**
  * Manage the game progress
  * @param {none}
@@ -68,9 +70,9 @@ function drawGame() {
         spawnFood();
         foodCount = 1;
     }
-    drawWorld();
     moveSnake();
     refreshWorld();
+    drawWorld();
     setTimeout(drawGame, 1000 / refresh);
 }
 
@@ -101,8 +103,8 @@ function moveSnake() {
         } else restart_game();
     } else if (xVelocity !== 0) {
         if (
-            snake[0][0] + xVelocity >= 0 &&
-            snake[0][0] + xVelocity < tileCount
+            snake[snake.length - 1][0] + xVelocity >= 0 &&
+            snake[snake.length - 1][0] + xVelocity < tileCount
         ) {
             snake.push([
                 snake[snake.length - 1][0] + xVelocity,
@@ -119,6 +121,7 @@ function moveSnake() {
             }
         } else restart_game();
     }
+    
 }
 
 /**
@@ -146,8 +149,12 @@ function refreshWorld() {
         }
     }
     for(let k = 0; k < snake.length; k++) {
-        if(k == snake.length - 1) world[snake[k][0]][snake[k][1]] = HEAD;
-        else world[snake[k][0]][snake[k][1]] = QUEUE;
+        if(k === snake.length - 1) {
+            world[snake[k][0]][snake[k][1]] = HEAD;
+        }
+        else {
+            world[snake[k][0]][snake[k][1]] = QUEUE;
+        }
     }
     world[yFood][xFood] = FOOD;
 }
