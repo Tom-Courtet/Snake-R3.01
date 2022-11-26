@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
 document.body.addEventListener("keydown", keyDown);
-const refresh = 5;
+const refresh = 7;
 
 /* -------------------------------------------------------- */
 //CONSTANTS
@@ -59,7 +59,16 @@ function restart_game() {
     document.location.reload(true);
 }
 
-
+function bitingTail() {
+    for(let i = 0; i < snake.length; i++) {
+        for(let j = 0; j < snake.length; j++) {
+            if(i != j) {
+                if(snake[i][0] === snake[j][0] && snake[i][1] === snake[j][1]) return true;
+            }
+        }
+    }
+    return false;
+}
 
 /**
  * Manage the game progress
@@ -71,6 +80,7 @@ function drawGame() {
         foodCount = 1;
     }
     moveSnake();
+    if(bitingTail()) restart_game();
     refreshWorld();
     drawWorld();
     setTimeout(drawGame, 1000 / refresh);
@@ -121,7 +131,6 @@ function moveSnake() {
             }
         } else restart_game();
     }
-    
 }
 
 /**
@@ -230,7 +239,7 @@ function keyDown(event) {
             }
             break;
         case "Escape":
-            console.log(world);
+            console.log(snake);
             yVelocity = 0;
             xVelocity = 0;
             break;
