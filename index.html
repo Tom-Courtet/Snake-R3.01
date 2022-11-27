@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8" />
-    <!-- lien pour les icône du dark mode -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-    />
-    <link
-      id="css-link"
-      rel="stylesheet"
-      type="text/css"
-      href="CSS/light-mode.css"
-    />
-    <link rel="icon" href="logo.png" />
-    <title>Snake</title>
-  </head>
-  <header class="container-h">
-    <section id="creators" class="block-h">
-      <span class="creators">Elliot CURVAT</span>
-      <span class="creators">Tom COURTET</span>
-    </section>
-    <section id="title" class="block-h">
-      <h1>SnakE</h1>
-    </section>
-    <section id="dm-button" class="block-h">
-      <div id="switch">
-        <i class="fas fa-moon"></i>
-        <div class="btn"></div>
-      </div>
-    </section>
-  </header>
-  <body class="container-b">
-    <div class="canvas">
-      <canvas id="board" width="400" height="400"></canvas>
-    </div>
-    <script src="game.js"></script>
-  </body>
-
-  <!-- Footer qui contiendra le menu -->
-  <footer class="container-f">
-    <script src="darkmode.js"></script>
-  </footer>
+	<meta charset="UTF-8" />
+	<!-- lien pour les icône du dark mode -->
+	<link
+		rel="stylesheet"
+		type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+	/>
+	<link
+		id="css-link"
+		rel="stylesheet"
+		type="text/css"
+		href="CSS/light-mode.css"
+	/>
+	<link rel="icon" href="logo.png" />
+	<title>Snake</title>
+  	</head>
+  	
+  	<body class="container-b">
+		<header class="container-h">
+			<section id="creators" class="block-h">
+				 <span class="creators">Elliot CURVAT</span>
+			  <span class="creators">Tom COURTET</span>
+			</section>
+			<section id="title" class="block-h">
+				  <h1>SnakE</h1>
+			</section>
+			<section id="dm-button" class="block-h">
+				  <div id="switch">
+					<i class="fas fa-moon"></i>
+					<div class="btn"></div>
+				  </div>
+			</section>
+		  </header>
+		<div class="canvas">
+			<!-- <canvas id="board" width="400" height="400"></canvas> -->
+		</div>
+		<div class="welcome">
+			<div class="explanations">
+				<h2>Comment jouer ?</h2>
+				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iusto dicta obcaecati, porro omnis doloribus facere aspernatur minus eaque, suscipit natus tempore, ab magni. Ipsam tempore temporibus est corporis non.</p>
+			</div>
+			<div class="levels">
+				<button id="level-1" type="button">Easy</button>
+				<button id="level-2" type="button">Medium</button>
+				<button id="level-3" type="button">Hard</button>
+			</div>
+		</div>
+		<!-- Footer qui contiendra le menu -->
+		<footer class="container-f">
+		
+		</footer>
+		<script src="game.js"></script>
+		<script src="darkmode.js"></script>
+  	</body>
 </html>

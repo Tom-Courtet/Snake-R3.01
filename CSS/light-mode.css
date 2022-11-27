@@ -131,7 +131,10 @@ body {
 
 .canvas {
     display: flex;
-    background-color: #ffffff;
+}
+
+.welcome {
+    width: 50vw;
 }
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Footer css */
@@ -144,4 +147,10 @@ footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+
+/* Autres */
+.invisible {
+    display:none;
 }
