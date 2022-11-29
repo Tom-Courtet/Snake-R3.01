@@ -5,7 +5,7 @@ const levels = document.getElementsByTagName("button");
 var tileCount;
 var tileSize;
 var refresh;
-var walls = [[0,0],[10,0]];
+var walls;
 
 window.addEventListener('hashchange', () => {
     if(location.hash !== "") {
@@ -28,14 +28,15 @@ function setLevel(num) {
             // création du canvas
             var newCanvas = document.createElement("canvas");
             newCanvas.setAttribute("id", "board");
-            newCanvas.setAttribute("width", "400");
-            newCanvas.setAttribute("height", "400");
+            newCanvas.setAttribute("width", "375");
+            newCanvas.setAttribute("height", "375");
             document.querySelector(".canvas").appendChild(newCanvas);
 
             // initialisation des variables avec le niveau choisi
             tileCount = data.tileCount;
             tileSize = data.tileSize;
             refresh = data.refresh;
+            walls = data.walls;
 
             // lancement du jeu
             startGame();
@@ -102,8 +103,8 @@ function startGame() {
     let yFood = 0;
     let world = [];
     let snake = [
-        [milieu - 2, milieu],
-        [milieu - 1, milieu],
+        [milieu, milieu + 2],
+        [milieu, milieu + 1],
         [milieu, milieu]
     ];
     initWorld(tileCount);
@@ -153,6 +154,13 @@ function startGame() {
         return false;
     }
 
+    function hittingWall() {
+        for(let i = 0; i < walls.length; i++) {
+            if(snake[snake.length - 1][0] == walls[i][0] && snake[snake.length - 1][1] == walls[i][1]) return true;
+        }
+        return false;
+    }
+
     /**
      * Manage the game progress
      * @param {none}
@@ -163,7 +171,7 @@ function startGame() {
             foodCount = 1;
         }
         moveSnake();
-        if(bitingTail()) restart_game(snake.length - 3);
+        if(bitingTail() || hittingWall()) restart_game(snake.length - 3);
         refreshWorld();
         drawWorld();
         drawScore();
@@ -296,7 +304,7 @@ function startGame() {
     function drawScore() {
         context.fillStyle = "#ffffff";
         context.font = "50px Arial";
-        context.fillText(snake.length - 3, 200, 200+1/3*50);
+        context.fillText(snake.length - 3, 375/2 - 1/3*50, 375/2 + 1/3*50);
     }
 
     /**

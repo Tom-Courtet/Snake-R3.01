@@ -1,5 +1,6 @@
 {
-    "tileCount": 16,
+    "tileCount": 15,
     "tileSize": 25,
-    "refresh": 11
+    "refresh": 10,
+    "walls": [[3,3], [3, 11], [11, 3], [11, 11]]
 }
