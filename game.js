@@ -5,6 +5,7 @@ const levels = document.getElementsByTagName("button");
 var tileCount;
 var tileSize;
 var refresh;
+var walls = [[0,0],[10,0]];
 
 window.addEventListener('hashchange', () => {
     if(location.hash !== "") {
@@ -24,14 +25,19 @@ function setLevel(num) {
         })
         .then (function(data) {
             document.querySelector(".welcome").classList.add("invisible");
+            // création du canvas
             var newCanvas = document.createElement("canvas");
             newCanvas.setAttribute("id", "board");
             newCanvas.setAttribute("width", "400");
             newCanvas.setAttribute("height", "400");
             document.querySelector(".canvas").appendChild(newCanvas);
+
+            // initialisation des variables avec le niveau choisi
             tileCount = data.tileCount;
             tileSize = data.tileSize;
             refresh = data.refresh;
+
+            // lancement du jeu
             startGame();
         })
         .catch(function (err) {
@@ -73,6 +79,7 @@ const QUEUE = "Q";
 const EMPTY = "E";
 const FOOD = "F";
 const HEAD = "H";
+const WALL = "W";
 
 
 function startGame() {
@@ -112,19 +119,18 @@ function startGame() {
                 world[i].push(EMPTY);
             }
         }
-
         world[milieu][milieu] = HEAD;
-
         world[milieu - 2][milieu] = QUEUE;
-
         world[milieu - 1][milieu] = QUEUE;
     }
 
     /**
      * Restart the game by refreshing the page
-     * @param {none}
+     * @param {Number} score
      */
-    function restart_game() {
+    function restart_game(score) {
+        alert('Score final : ' + score);
+
         // remove hash from url so no json is loaded
         var uri = window.location.toString();
         var clean_uri = uri.substring(0,
@@ -157,9 +163,10 @@ function startGame() {
             foodCount = 1;
         }
         moveSnake();
-        if(bitingTail()) restart_game();
+        if(bitingTail()) restart_game(snake.length - 3);
         refreshWorld();
         drawWorld();
+        drawScore();
         setTimeout(drawGame, 1000 / refresh);
     }
 
@@ -187,7 +194,7 @@ function startGame() {
                     world[xFood][yFood] = EMPTY;
                     foodCount = 0;
                 }
-            } else restart_game();
+            } else restart_game(snake.length - 3);
         } else if (xVelocity !== 0) {
             if (
                 snake[snake.length - 1][0] + xVelocity >= 0 &&
@@ -206,14 +213,14 @@ function startGame() {
                     world[xFood][yFood] = EMPTY;
                     foodCount = 0;
                 }
-            } else restart_game();
+            } else restart_game(snake.length - 3);
         }
     }
 
     /**
-     *Spawns food randomly
-    @param {none}
-    */
+     * Spawns food randomly
+     * @param {none}
+     */
     function spawnFood() {
         xFood = Math.floor(Math.random() * tileCount);
         yFood = Math.floor(Math.random() * tileCount);
@@ -243,6 +250,13 @@ function startGame() {
             }
         }
         world[yFood][xFood] = FOOD;
+        if(walls.length > 0) { // alors il y a des murs définis dans le json
+            for(i = 0 ; i < walls.length ; i++) {
+                let x = walls[i][0];
+                let y = walls[i][1];
+                world[y][x] = WALL;
+            }
+        }
     }
 
     /**
@@ -265,12 +279,24 @@ function startGame() {
                     case "H":
                         context.fillStyle = hColor;
                         break;
+                    case "W":
+                        context.fillStyle = "#747d8c";
                     default:
                         break;
                 }
                 context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
             }
         }
+    }
+
+    /**
+     * Draw score on canvas
+     * @param {none}
+     */
+    function drawScore() {
+        context.fillStyle = "#ffffff";
+        context.font = "50px Arial";
+        context.fillText(snake.length - 3, 200, 200+1/3*50);
     }
 
     /**
