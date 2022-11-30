@@ -169,7 +169,7 @@ li p {
 .level-button {
     display: inline-block;
     border-radius: 4px;
-    background-color: var(--lime-soap);
+    background-color: #22C55E;
     border: none;
     color: #ffffff;
     text-align: center;

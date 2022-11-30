@@ -118,12 +118,6 @@ function startGame() {
     let eColor = "#22C55E";
 
     // Indique la direction du serpent
-
-    const milieu = Math.floor(tileCount / 2);
-
-    /* -------------------------------------------------------- */
-    //VARIABLES
-    /* -------------------------------------------------------- */
     let xVelocity = 0;
     let yVelocity = 0;
 
@@ -139,8 +133,6 @@ function startGame() {
 
     // Représente le serpent (position 0 : bout de la queue // dernière position : tête)
     let snake = [
-        [milieu - 2, milieu + 2],
-        [milieu - 1, milieu + 2],
         [milieu, milieu + 2],
         [milieu, milieu + 1],
         [milieu, milieu]
