@@ -5,25 +5,32 @@ const levels = document.getElementsByTagName("button");
 var tileCount;
 var tileSize;
 var refresh;
-var walls = [[0,0],[10,0]];
+var walls = [
+    [0, 0],
+    [10, 0],
+];
 
-window.addEventListener('hashchange', () => {
-    if(location.hash !== "") {
-        setLevel(location.hash.replace("#", ""));
-    }
-}, false);
+window.addEventListener(
+    "hashchange",
+    () => {
+        if (location.hash !== "") {
+            setLevel(location.hash.replace("#", ""));
+        }
+    },
+    false
+);
 
 function setLevel(num) {
     const url = "json/" + num + ".json";
     fetch(url)
-        .then(function(response) {
+        .then(function (response) {
             if (response.ok) {
                 return response.json();
             } else {
-            throw ("Error " + response.status);
+                throw "Error " + response.status;
             }
         })
-        .then (function(data) {
+        .then(function (data) {
             document.querySelector(".welcome").classList.add("invisible");
             // création du canvas
             var newCanvas = document.createElement("canvas");
@@ -47,7 +54,7 @@ function setLevel(num) {
 
 function changeHash(level) {
     var url_ob = new URL(document.URL);
-    url_ob.hash = '#' + level;
+    url_ob.hash = "#" + level;
 
     // new url
     var new_url = url_ob.href;
@@ -56,8 +63,8 @@ function changeHash(level) {
     document.location.href = new_url;
 }
 
-const buttonPressed = e => {
-    switch(e.target.id) {
+const buttonPressed = (e) => {
+    switch (e.target.id) {
         case "level-1":
         case "level-2":
         case "level-3":
@@ -66,8 +73,8 @@ const buttonPressed = e => {
         default:
             break;
     }
-  }
-  
+};
+
 for (let button of levels) {
     button.addEventListener("click", buttonPressed);
 }
@@ -81,14 +88,13 @@ const FOOD = "F";
 const HEAD = "H";
 const WALL = "W";
 
-
 function startGame() {
     const canvas = document.querySelector("canvas");
     const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
     document.body.addEventListener("keydown", keyDown);
-    
+
     const milieu = Math.floor(tileCount / 2);
-    
+
     /* -------------------------------------------------------- */
     //VARIABLES
     /* -------------------------------------------------------- */
@@ -104,14 +110,14 @@ function startGame() {
     let snake = [
         [milieu - 2, milieu],
         [milieu - 1, milieu],
-        [milieu, milieu]
+        [milieu, milieu],
     ];
     initWorld(tileCount);
 
     /**
      *Initialize the world tab
-    *@param {Number} tileCount
-    */
+     *@param {Number} tileCount
+     */
     function initWorld(tileCount) {
         for (let i = 0; i < tileCount; i++) {
             world[i] = []; // on est obligé de déclarer un nouveau tableau pour chaque case de world à i
@@ -129,24 +135,31 @@ function startGame() {
      * @param {Number} score
      */
     function restart_game(score) {
-        alert('Score final : ' + score);
+        if (score < tileCount ** 2) {
+            // alert("Score final : " + score);
+            alert("Score final :" + score);
+        } else {
+            alert("Vous avez gagné! Bravo");
+        }
 
         // remove hash from url so no json is loaded
         var uri = window.location.toString();
-        var clean_uri = uri.substring(0,
-                        uri.indexOf("#"));
-        window.history.replaceState({},
-        document.title, clean_uri);
-        
+        var clean_uri = uri.substring(0, uri.indexOf("#"));
+        window.history.replaceState({}, document.title, clean_uri);
+
         // reload page
         document.location.reload(true);
     }
 
     function bitingTail() {
-        for(let i = 0; i < snake.length; i++) {
-            for(let j = 0; j < snake.length; j++) {
-                if(i != j) {
-                    if(snake[i][0] === snake[j][0] && snake[i][1] === snake[j][1]) return true;
+        for (let i = 0; i < snake.length; i++) {
+            for (let j = 0; j < snake.length; j++) {
+                if (i != j) {
+                    if (
+                        snake[i][0] === snake[j][0] &&
+                        snake[i][1] === snake[j][1]
+                    )
+                        return true;
                 }
             }
         }
@@ -163,11 +176,11 @@ function startGame() {
             foodCount = 1;
         }
         moveSnake();
-        if(bitingTail()) restart_game(snake.length - 3);
+        if (bitingTail()) restart_game(snake.length - 3);
         refreshWorld();
         drawWorld();
         drawScore();
-        setTimeout(drawGame, 1000 / refresh);
+        timeOut = setTimeout(drawGame, 1000 / refresh);
     }
 
     /**
@@ -236,22 +249,22 @@ function startGame() {
      * @param {none}
      */
     function refreshWorld() {
-        for(let i = 0; i < world.length; i++) {
+        for (let i = 0; i < world.length; i++) {
             for (let j = 0; j < world.length; j++) {
                 world[i][j] = EMPTY;
             }
         }
-        for(let k = 0; k < snake.length; k++) {
-            if(k === snake.length - 1) {
+        for (let k = 0; k < snake.length; k++) {
+            if (k === snake.length - 1) {
                 world[snake[k][0]][snake[k][1]] = HEAD;
-            }
-            else {
+            } else {
                 world[snake[k][0]][snake[k][1]] = QUEUE;
             }
         }
         world[yFood][xFood] = FOOD;
-        if(walls.length > 0) { // alors il y a des murs définis dans le json
-            for(i = 0 ; i < walls.length ; i++) {
+        if (walls.length > 0) {
+            // alors il y a des murs définis dans le json
+            for (i = 0; i < walls.length; i++) {
                 let x = walls[i][0];
                 let y = walls[i][1];
                 world[y][x] = WALL;
@@ -284,7 +297,12 @@ function startGame() {
                     default:
                         break;
                 }
-                context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                context.fillRect(
+                    i * tileSize,
+                    j * tileSize,
+                    tileSize,
+                    tileSize
+                );
             }
         }
     }
@@ -296,7 +314,7 @@ function startGame() {
     function drawScore() {
         context.fillStyle = "#ffffff";
         context.font = "50px Arial";
-        context.fillText(snake.length - 3, 200, 200+1/3*50);
+        context.fillText(snake.length - 3, 200, 200 + (1 / 3) * 50);
     }
 
     /**
