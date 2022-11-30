@@ -1,20 +1,55 @@
-// Ecouteur de clic sur bouton pour niveau -> on change le hash
-// Ecouteur de changement de hash -> setLevel()
-
-const levels = document.getElementsByTagName("button");
+//------------------------------------------------------------------------------
+//
+//          AVANT DE LANCER LE JEU
+//
+//------------------------------------------------------------------------------
+// Variables dont on récupère les valeurs dans le .json
 var tileCount;
 var tileSize;
 var refresh;
 var walls;
 
+// Boutons de séléction du niveau
+const levels = document.getElementsByTagName("button");
 
+// Méthode déclenchée lors de l'appui sur un bouton
+const buttonPressed = e => {
+    switch(e.target.id) {
+        case "level-1":
+        case "level-2":
+        case "level-3":
+            changeHash(e.target.id);
+            break;
+        default:
+            break;
+    }
+}
 
+// Ajout des écouteurs sur les boutons
+for (let button of levels) {
+    button.addEventListener("click", buttonPressed);
+}
+
+// Change le hash dans le lien avec le niveau correspondant
+function changeHash(level) {
+    var url_ob = new URL(document.URL);
+    url_ob.hash = '#' + level;
+
+    // new url
+    var new_url = url_ob.href;
+
+    // change the current url
+    document.location.href = new_url;
+}
+
+// Ecouteur sur le changement de hash dans le lien
 window.addEventListener('hashchange', () => {
     if(location.hash !== "") {
         setLevel(location.hash.replace("#", ""));
     }
 }, false);
 
+// Récupération des données du niveau choisi (après changement du hash) et initialisation des variables
 function setLevel(num) {
     const url = "json/" + num + ".json";
     fetch(url)
@@ -27,6 +62,7 @@ function setLevel(num) {
         })
         .then (function(data) {
             document.querySelector(".welcome").classList.add("invisible");
+
             // création du canvas
             var newCanvas = document.createElement("canvas");
             newCanvas.setAttribute("id", "board");
@@ -48,66 +84,53 @@ function setLevel(num) {
         });
 }
 
-function changeHash(level) {
-    var url_ob = new URL(document.URL);
-    url_ob.hash = '#' + level;
+//------------------------------------------------------------------------------
+//
+//          PENDANT LE JEU
+//
+//------------------------------------------------------------------------------
 
-    // new url
-    var new_url = url_ob.href;
-
-    // change the current url
-    document.location.href = new_url;
-}
-
-const buttonPressed = e => {
-    switch(e.target.id) {
-        case "level-1":
-        case "level-2":
-        case "level-3":
-            changeHash(e.target.id);
-            break;
-        default:
-            break;
-    }
-  }
-  
-for (let button of levels) {
-    button.addEventListener("click", buttonPressed);
-}
-
-/* -------------------------------------------------------- */
-//CONSTANTS
-/* -------------------------------------------------------- */
+// Constantes utilisées pour remplir le tableau world
 const QUEUE = "Q";
 const EMPTY = "E";
 const FOOD = "F";
 const HEAD = "H";
 const WALL = "W";
 
-
+// Fonction générale qui gère le jeu
 function startGame() {
+    // Variables du canvas
     const canvas = document.querySelector("canvas");
-    const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
-    document.body.addEventListener("keydown", keyDown);
+    const context = canvas.getContext("2d");
+
+    // Position de la case au centre
     const milieu = Math.floor(tileCount / 2);
 
-    // Gestion des parties du corps du snake : on attend que l'image soit chargée
-    var loaded = 0;
+    // Ecouteur des touches entrées au clavier
+    document.body.addEventListener("keydown", keyDown);
+
+    // Image utilisée pour dessiner des élements
     sprite = new Image();
     sprite.src = '/sprite.png';
-    
-    /* -------------------------------------------------------- */
-    //VARIABLES
-    /* -------------------------------------------------------- */
+
+    // Couleurs
     let eColor = "#22C55E";
-    let hColor = "#004721";
-    let fColor = "red";
+
+    // Indique la direction du serpent
     let xVelocity = 0;
     let yVelocity = 0;
+
+    // Nombre de nourriture présente dans le tableau world
     let foodCount = 0;
+
+    // Position de la nourriture
     let xFood = 0;
     let yFood = 0;
+
+    // Tableau world, initialisé plus tard
     let world = [];
+
+    // Représente le serpent (position 0 : bout de la queue // dernière position : tête)
     let snake = [
         [milieu - 2, milieu + 2],
         [milieu - 1, milieu + 2],
@@ -115,65 +138,29 @@ function startGame() {
         [milieu, milieu + 1],
         [milieu, milieu]
     ];
+
+    // Initialisation du tableau world avec le nombre de cases du niveau
     initWorld(tileCount);
 
     /**
-     *Initialize the world tab
-    *@param {Number} tileCount
-    */
+     * Initialisation du tableau world
+     * @param {Number} tileCount
+     */
     function initWorld(tileCount) {
         for (let i = 0; i < tileCount; i++) {
-            world[i] = []; // on est obligé de déclarer un nouveau tableau pour chaque case de world à i
+            world[i] = [];
             for (let j = 0; j < tileCount; j++) {
+                // On met toutes les cases du tableau à "VIDE" pour l'initialiser
                 world[i].push(EMPTY);
             }
         }
-        world[milieu][milieu] = HEAD;
-        world[milieu - 2][milieu] = QUEUE;
-        world[milieu - 1][milieu] = QUEUE;
     }
 
     /**
-     * Restart the game by refreshing the page
-     * @param {Number} score
-     */
-    function restart_game(score) {
-        alert('Score final : ' + score);
-
-        // remove hash from url so no json is loaded
-        var uri = window.location.toString();
-        var clean_uri = uri.substring(0,
-                        uri.indexOf("#"));
-        window.history.replaceState({},
-        document.title, clean_uri);
-        
-        // reload page
-        document.location.reload(true);
-    }
-
-    function bitingTail() {
-        for(let i = 0; i < snake.length; i++) {
-            for(let j = 0; j < snake.length; j++) {
-                if(i != j) {
-                    if(snake[i][0] === snake[j][0] && snake[i][1] === snake[j][1]) return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    function hittingWall() {
-        for(let i = 0; i < walls.length; i++) {
-            if(snake[snake.length - 1][0] == walls[i][0] && snake[snake.length - 1][1] == walls[i][1]) return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Manage the game progress
+     * Gère toutes les fonctions du jeu. Se répète périodiquement
      * @param {none}
      */
-    function drawGame() {
+     function drawGame() {
         if (foodCount === 0) {
             spawnFood();
             foodCount = 1;
@@ -187,57 +174,10 @@ function startGame() {
     }
 
     /**
-     * manages the snake's movements
+     * Fait apparaître de la nourriture aléatoirement
      * @param {none}
      */
-    function moveSnake() {
-        if (yVelocity !== 0) {
-            // en haut et en bas
-            if (
-                snake[snake.length - 1][1] + yVelocity >= 0 &&
-                snake[snake.length - 1][1] + yVelocity < tileCount
-            ) {
-                snake.push([
-                    snake[snake.length - 1][0],
-                    snake[snake.length - 1][1] + yVelocity,
-                ]);
-                if (
-                    snake[snake.length - 1][0] != yFood ||
-                    snake[snake.length - 1][1] != xFood
-                ) {
-                    snake.shift();
-                } else {
-                    world[xFood][yFood] = EMPTY;
-                    foodCount = 0;
-                }
-            } else restart_game(snake.length - 3);
-        } else if (xVelocity !== 0) {
-            if (
-                snake[snake.length - 1][0] + xVelocity >= 0 &&
-                snake[snake.length - 1][0] + xVelocity < tileCount
-            ) {
-                snake.push([
-                    snake[snake.length - 1][0] + xVelocity,
-                    snake[snake.length - 1][1],
-                ]);
-                if (
-                    snake[snake.length - 1][0] != yFood ||
-                    snake[snake.length - 1][1] != xFood
-                ) {
-                    snake.shift();
-                } else {
-                    world[xFood][yFood] = EMPTY;
-                    foodCount = 0;
-                }
-            } else restart_game(snake.length - 3);
-        }
-    }
-
-    /**
-     * Spawns food randomly
-     * @param {none}
-     */
-    function spawnFood() {
+     function spawnFood() {
         xFood = Math.floor(Math.random() * tileCount);
         yFood = Math.floor(Math.random() * tileCount);
         for (let i = 0; i < snake.length; i++) {
@@ -254,25 +194,91 @@ function startGame() {
     }
 
     /**
-     * Refresh the world tab to set new values
+     * S'occupe du déplacement du serpent
+     * @param {none}
+     */
+     function moveSnake() {
+        if (yVelocity !== 0) {
+            // Direction : vers le haut et vers le bas
+            // Vérification si le déplacement est possible et si l'on ne sort pas du monde
+            if (snake[snake.length - 1][1] + yVelocity >= 0 && snake[snake.length - 1][1] + yVelocity < tileCount) {
+                snake.push([snake[snake.length - 1][0], snake[snake.length - 1][1] + yVelocity]);
+                if (snake[snake.length - 1][0] != yFood || snake[snake.length - 1][1] != xFood) {
+                    snake.shift();
+                } else {
+                    world[xFood][yFood] = EMPTY;
+                    foodCount = 0;
+                }
+            } else restart_game(snake.length - 3);
+        } else if (xVelocity !== 0) {
+            // Direction : vers la gauche et vers la droite
+            // Vérification si le déplacement est possible et si l'on ne sort pas du monde
+            if (snake[snake.length - 1][0] + xVelocity >= 0 && snake[snake.length - 1][0] + xVelocity < tileCount) {
+                snake.push([snake[snake.length - 1][0] + xVelocity, snake[snake.length - 1][1]]);
+                if (snake[snake.length - 1][0] != yFood || snake[snake.length - 1][1] != xFood) {
+                    // Pas de nourriture mangée : on raccourcit le serpent
+                    snake.shift();
+                } else {
+                    // Nourriture mangée : on la supprime de world et on décrémente foodCount
+                    world[xFood][yFood] = EMPTY;
+                    foodCount = 0;
+                }
+            } else restart_game(snake.length - 3);
+        }
+    }
+
+    /**
+     * Vérifie si le serpent est en contact avec sa queue
+     * @returns {Boolean} true si le serpent est en contact avec une partie de sa queue, false sinon
+     */
+    function bitingTail() {
+        for(let i = 0; i < snake.length; i++) {
+            for(let j = 0; j < snake.length; j++) {
+                if(i != j) {
+                    if(snake[i][0] === snake[j][0] && snake[i][1] === snake[j][1]) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Vérifie si le serpent a percuté un mur
+     * @returns {Boolean} true si le serpent est en contact avec un mur, false sinon
+     */
+    function hittingWall() {
+        for(let i = 0; i < walls.length; i++) {
+            if(snake[snake.length - 1][0] == walls[i][0] && snake[snake.length - 1][1] == walls[i][1]) return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Mets world à jour en fonction du serpent, de la nourriture et des murs
      * @param {none}
      */
     function refreshWorld() {
         for(let i = 0; i < world.length; i++) {
             for (let j = 0; j < world.length; j++) {
+                // Toutes les cases sont mises à "EMPTY"
                 world[i][j] = EMPTY;
             }
         }
         for(let k = 0; k < snake.length; k++) {
+            // On mets le serpent au bon endroit dans world
             if(k === snake.length - 1) {
+                // C'est la tête
                 world[snake[k][0]][snake[k][1]] = HEAD;
             }
             else {
+                // C'est un morceau de la queue
                 world[snake[k][0]][snake[k][1]] = QUEUE;
             }
         }
+        // On met la nourriture au bon endroit
         world[yFood][xFood] = FOOD;
-        if(walls.length > 0) { // alors il y a des murs définis dans le json
+        if(walls.length > 0) {
+            // Il y a des murs définis dans le json et on les place
             for(i = 0 ; i < walls.length ; i++) {
                 let x = walls[i][0];
                 let y = walls[i][1];
@@ -282,35 +288,42 @@ function startGame() {
     }
 
     /**
-     * Draw the canvas wich show the world
+     * Dessin sur le canvas
      * @param {none}
      */
     function drawWorld() {
+        // On efface tout ce qui a pu rester
         context.clearRect(0, 0, 375, 375);
+
         for (let i = 0; i < world.length; i++) {
             for (let j = 0; j < world.length; j++) {
                 switch (world[i][j]) {
-                    // pour les parties qui utilisent le sprite : on dessine l'arrière plan puis le sprite par dessus
+                    // Pour les parties qui utilisent le sprite : on dessine l'arrière plan puis le sprite par dessus
                     case "Q":
+                        // Queue
                         context.fillStyle = eColor;
                         context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                         drawFromSprite("Q", i, j);
                         break;
                     case "H":
+                        // Tête
                         context.fillStyle = eColor;
                         context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                         drawFromSprite("H", i, j);
                         break;
                     case "F":
+                        // Nourriture
                         context.fillStyle = eColor;
                         context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                         drawFromSprite("F", i, j);
                         break;
                     case "E":
+                        // Vide
                         context.fillStyle = eColor;
                         context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                         break;
                     case "W":
+                        // Mur
                         context.fillStyle = "#747d8c";
                         context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                     default:
@@ -322,40 +335,46 @@ function startGame() {
     }
 
     function drawFromSprite(part, i, j) {
+        // Variables utilisées pour calculer la position de la partie à utiliser sur le sprite
         var tx;
         var ty;
+
         var prevSnakePart;
         var currentSnakePart;
-        var nextSnakePart;        
+        var nextSnakePart;
+
         switch (part) {
             case "F":
+                // Nourriture
                 tx = 0;
                 ty = 3;
                 break;
             case "H":
+                // Tête
                 prevSnakePart = snake.length - 2;
                 currentSnakePart = snake.length - 1;
                 nextSnakePart = -1;
                 if (snake[currentSnakePart][1] < snake[prevSnakePart][1]) {
-                    // vers le haut
+                    // Vers le haut
                     tx = 3;
                     ty = 0;
                 } else if (snake[currentSnakePart][0] > snake[prevSnakePart][0]) {
-                    // vers la droite
+                    // Vers la droite
                     tx = 4;
                     ty = 0;
                 } else if (snake[currentSnakePart][0] < snake[prevSnakePart][0]) {
-                    // vers la gauche
+                    // Vers la gauche
                     tx = 3;
                     ty = 1;
                 } else if (snake[currentSnakePart][1] > snake[prevSnakePart][1]) {
-                    // vers le bas
+                    // Vers le bas
                     tx = 4;
                     ty = 1;
                 }
                 break;
             case "Q":
                 for(k = 0; k < snake.length; k++) {
+                    // On cherche quel morceau de la queue est concerné
                     if(i === snake[k][0] && j === snake[k][1]) {
                         prevSnakePart = k - 1;
                         currentSnakePart = k;
@@ -363,65 +382,70 @@ function startGame() {
                     }
                 }
                 if (currentSnakePart === 0) {
-                    // c'est le bout de la queue
+                    // C'est le bout de la queue qui est concerné
                     if (snake[nextSnakePart][0] === snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
-                        // vers le haut
+                        // Vers le haut
                         tx = 3;
                         ty = 2;
                     } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] === snake[currentSnakePart][1]) {
-                        // vers la droite
+                        // Vers la droite
                         tx = 4;
                         ty = 2;
                     } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] === snake[currentSnakePart][1]) {
-                        // vers la gauche
+                        // Vers la gauche
                         tx = 3;
                         ty = 3;
                     } else if (snake[nextSnakePart][0] === snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
-                        // vers le bas
+                        // Vers le bas
                         tx = 4;
                         ty = 3;
                     }
                 } else {
-                    if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][0] > snake[currentSnakePart][0] || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
-                        // Horizontal Left-Right
+                    // C'est autre chose que le bout de la queue
+                    if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][0] > snake[currentSnakePart][0]
+                        || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
+                        // De gauche à droite
                         tx = 1; 
                         ty = 0;
-                    } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][1] > snake[currentSnakePart][1] || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
-                        // Angle Left-Down
-                        tx = 2; 
-                        ty = 0;
-                    } else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][1] > snake[currentSnakePart][1] || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
-                        // Vertical Up-Down
+                    }else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][1] > snake[currentSnakePart][1]
+                        || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                        // Du haut vers le bas
                         tx = 2; 
                         ty = 1;
-                    } else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][0] < snake[currentSnakePart][0] || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][0] < snake[currentSnakePart][0]) {
-                        // Angle Top-Left
+                    } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][1] > snake[currentSnakePart][1]
+                        || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                        // Angle bas-gauche
+                        tx = 2; 
+                        ty = 0;
+                    } else if (snake[nextSnakePart][1] > snake[currentSnakePart][1] && snake[prevSnakePart][0] > snake[currentSnakePart][0]
+                        || snake[prevSnakePart][1] > snake[currentSnakePart][1] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
+                        // Angle bas-droit
+                        tx = 0; 
+                        ty = 0;
+                    
+                    } else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][0] < snake[currentSnakePart][0]
+                        || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][0] < snake[currentSnakePart][0]) {
+                        // Angle haut-gauche
                         tx = 2; 
                         ty = 2;
-                    } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[prevSnakePart][1] < snake[currentSnakePart][1] || snake[prevSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
-                        // Angle Right-Up
+                    } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[prevSnakePart][1] < snake[currentSnakePart][1]
+                        || snake[prevSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
+                        // Angle haut-droit
                         tx = 0; 
                         ty = 1;
-                    } else if (snake[nextSnakePart][1] > snake[currentSnakePart][1] && snake[prevSnakePart][0] > snake[currentSnakePart][0] || snake[prevSnakePart][1] > snake[currentSnakePart][1] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
-                        // Angle Down-Right
-                        tx = 0; 
-                        ty = 0;
                     }
                 }
                 break;
             default:
                 break;
         }
-        // logique tête :
-            // si le morceau d'avant est en dessous : sprite vers le haut
-            // si le morceau d'avant est à gauche : sprite à droite
-            // si le morceau d'avant est à droite : sprite à gauche
-            // si le morceau d'avant est au dessus : sprite vers le bas
+        // Sur sprite, on prend 64 pixels sur 64 aux coordonnées tx*64, ty*64
+        // On la met aux coordonnées i*tileSize, j*tileSize avec pour taille tileSize sur tileSize
         context.drawImage(sprite, tx*64, ty*64, 64, 64, i * tileSize, j * tileSize, tileSize, tileSize);
     }
 
     /**
-     * Draw score on canvas
+     * Dessiner le score sur le canvas
      * @param {none}
      */
     function drawScore() {
@@ -431,7 +455,23 @@ function startGame() {
     }
 
     /**
-     * Set keyboard inputs
+     * Fonction lancée lorsqu'une partie se termine
+     * @param {Number} score
+     */
+     function restart_game(score) {
+        alert('Score final : ' + score);
+
+        // On efface le hash de l'URL pour ne pas séléctionner de niveau de base
+        var uri = window.location.toString();
+        var clean_uri = uri.substring(0,uri.indexOf("#"));
+        window.history.replaceState({},document.title, clean_uri);
+        
+        // On recharge la page
+        document.location.reload(true);
+    }
+
+     /**
+     * Changer la direction en fonction de la touche sur laquelle on appuie
      * @param {event} event
      */
     function keyDown(event) {
@@ -473,7 +513,7 @@ function startGame() {
                 }
                 break;
             case "Escape":
-                console.log(snake);
+                // Pause pour debug
                 yVelocity = 0;
                 xVelocity = 0;
                 break;
@@ -482,5 +522,6 @@ function startGame() {
         }
     }
 
+    // On appelle cette fonction pour la première fois (qui se répètera périodiquement)
     drawGame();
 }
