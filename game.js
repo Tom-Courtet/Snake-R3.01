@@ -7,6 +7,8 @@ var tileSize;
 var refresh;
 var walls;
 
+
+
 window.addEventListener('hashchange', () => {
     if(location.hash !== "") {
         setLevel(location.hash.replace("#", ""));
@@ -87,13 +89,17 @@ function startGame() {
     const canvas = document.querySelector("canvas");
     const context = canvas.getContext("2d"); //nécessaire pour dessiner dessus
     document.body.addEventListener("keydown", keyDown);
-    
     const milieu = Math.floor(tileCount / 2);
+
+    // Gestion des parties du corps du snake : on attend que l'image soit chargée
+    var loaded = 0;
+    sprite = new Image();
+    sprite.src = '/sprite.png';
     
     /* -------------------------------------------------------- */
     //VARIABLES
     /* -------------------------------------------------------- */
-    let eColor = "lightblue";
+    let eColor = "#22C55E";
     let hColor = "#004721";
     let fColor = "red";
     let xVelocity = 0;
@@ -103,6 +109,8 @@ function startGame() {
     let yFood = 0;
     let world = [];
     let snake = [
+        [milieu - 2, milieu + 2],
+        [milieu - 1, milieu + 2],
         [milieu, milieu + 2],
         [milieu, milieu + 1],
         [milieu, milieu]
@@ -160,7 +168,7 @@ function startGame() {
         }
         return false;
     }
-
+    
     /**
      * Manage the game progress
      * @param {none}
@@ -278,29 +286,138 @@ function startGame() {
      * @param {none}
      */
     function drawWorld() {
+        context.clearRect(0, 0, 375, 375);
         for (let i = 0; i < world.length; i++) {
             for (let j = 0; j < world.length; j++) {
                 switch (world[i][j]) {
+                    // pour les parties qui utilisent le sprite : on dessine l'arrière plan puis le sprite par dessus
                     case "Q":
-                        context.fillStyle = "#00a24c";
+                        context.fillStyle = eColor;
+                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        drawFromSprite("Q", i, j);
+                        break;
+                    case "H":
+                        context.fillStyle = eColor;
+                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        drawFromSprite("H", i, j);
+                        break;
+                    case "F":
+                        context.fillStyle = eColor;
+                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        drawFromSprite("F", i, j);
                         break;
                     case "E":
                         context.fillStyle = eColor;
-                        break;
-                    case "F":
-                        context.fillStyle = fColor;
-                        break;
-                    case "H":
-                        context.fillStyle = hColor;
+                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                         break;
                     case "W":
                         context.fillStyle = "#747d8c";
+                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
                     default:
                         break;
                 }
-                context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                
             }
         }
+    }
+
+    function drawFromSprite(part, i, j) {
+        var tx;
+        var ty;
+        var prevSnakePart;
+        var currentSnakePart;
+        var nextSnakePart;        
+        switch (part) {
+            case "F":
+                tx = 0;
+                ty = 3;
+                break;
+            case "H":
+                prevSnakePart = snake.length - 2;
+                currentSnakePart = snake.length - 1;
+                nextSnakePart = -1;
+                if (snake[currentSnakePart][1] < snake[prevSnakePart][1]) {
+                    // vers le haut
+                    tx = 3;
+                    ty = 0;
+                } else if (snake[currentSnakePart][0] > snake[prevSnakePart][0]) {
+                    // vers la droite
+                    tx = 4;
+                    ty = 0;
+                } else if (snake[currentSnakePart][0] < snake[prevSnakePart][0]) {
+                    // vers la gauche
+                    tx = 3;
+                    ty = 1;
+                } else if (snake[currentSnakePart][1] > snake[prevSnakePart][1]) {
+                    // vers le bas
+                    tx = 4;
+                    ty = 1;
+                }
+                break;
+            case "Q":
+                for(k = 0; k < snake.length; k++) {
+                    if(i === snake[k][0] && j === snake[k][1]) {
+                        prevSnakePart = k - 1;
+                        currentSnakePart = k;
+                        nextSnakePart = k + 1;
+                    }
+                }
+                if (currentSnakePart === 0) {
+                    // c'est le bout de la queue
+                    if (snake[nextSnakePart][0] === snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
+                        // vers le haut
+                        tx = 3;
+                        ty = 2;
+                    } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] === snake[currentSnakePart][1]) {
+                        // vers la droite
+                        tx = 4;
+                        ty = 2;
+                    } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] === snake[currentSnakePart][1]) {
+                        // vers la gauche
+                        tx = 3;
+                        ty = 3;
+                    } else if (snake[nextSnakePart][0] === snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                        // vers le bas
+                        tx = 4;
+                        ty = 3;
+                    }
+                } else {
+                    if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][0] > snake[currentSnakePart][0] || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
+                        // Horizontal Left-Right
+                        tx = 1; 
+                        ty = 0;
+                    } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][1] > snake[currentSnakePart][1] || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                        // Angle Left-Down
+                        tx = 2; 
+                        ty = 0;
+                    } else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][1] > snake[currentSnakePart][1] || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                        // Vertical Up-Down
+                        tx = 2; 
+                        ty = 1;
+                    } else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][0] < snake[currentSnakePart][0] || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][0] < snake[currentSnakePart][0]) {
+                        // Angle Top-Left
+                        tx = 2; 
+                        ty = 2;
+                    } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[prevSnakePart][1] < snake[currentSnakePart][1] || snake[prevSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
+                        // Angle Right-Up
+                        tx = 0; 
+                        ty = 1;
+                    } else if (snake[nextSnakePart][1] > snake[currentSnakePart][1] && snake[prevSnakePart][0] > snake[currentSnakePart][0] || snake[prevSnakePart][1] > snake[currentSnakePart][1] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
+                        // Angle Down-Right
+                        tx = 0; 
+                        ty = 0;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        // logique tête :
+            // si le morceau d'avant est en dessous : sprite vers le haut
+            // si le morceau d'avant est à gauche : sprite à droite
+            // si le morceau d'avant est à droite : sprite à gauche
+            // si le morceau d'avant est au dessus : sprite vers le bas
+        context.drawImage(sprite, tx*64, ty*64, 64, 64, i * tileSize, j * tileSize, tileSize, tileSize);
     }
 
     /**
