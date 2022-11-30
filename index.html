@@ -1,46 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- lien pour les icône du dark mode -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-    />
-    <link
-      id="css-link"
-      rel="stylesheet"
-      type="text/css"
-      href="CSS/light-mode.css"
-    />
-    <link rel="icon" href="logo.png" />
-    <title>Snake</title>
-  </head>
-  <header class="container-h">
-    <section id="creators" class="block-h">
-      <span class="creators">Elliot CURVAT</span>
-      <span class="creators">Tom COURTET</span>
-    </section>
-    <section id="title" class="block-h">
-      <h1>SnakE</h1>
-    </section>
-    <section id="dm-button" class="block-h">
-      <div id="switch">
-        <i class="fas fa-moon"></i>
-        <div class="btn"></div>
-      </div>
-    </section>
-  </header>
-  <body class="container-b">
-    <div class="canvas">
-      <canvas id="board" width="400" height="400"></canvas>
-    </div>
-    <script src="game.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <!-- lien pour les icône du dark mode -->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        />
+        <link
+            id="css-link"
+            rel="stylesheet"
+            type="text/css"
+            href="CSS/light-mode.css"
+        />
+        <link rel="icon" href="logo.png" />
+        <title>Snake</title>
+    </head>
+    <body class="container-b">
 
-  <!-- Footer qui contiendra le menu -->
-  <footer class="container-f">
-    <script src="darkmode.js"></script>
-  </footer>
+        <header id="container-h">
+            <section id="creators" class="block-h">
+                <span class="creators">Elliot CURVAT</span>
+                <span class="creators">Tom COURTET</span>
+            </section>
+            <section id="title" class="block-h">
+                <a href="index.html"><h1>SnakE</h1></a>
+            </section>
+            <section id="dm-button" class="block-h">
+                <div id="switch">
+                    <i class="fas fa-moon"></i>
+                    <div class="btn"></div>
+                </div>
+            </section>
+        </header>
+
+
+        <div class="canvas"></div>
+        <img src="sprite.png" id="sprite" style="display: none;">
+        <div class="welcome">
+            <div class="explanations">
+                <h2>Comment jouer ?</h2>
+                <p id="introduction">
+                    <ol type="1" id="rules">
+                        <li><p>Dirige le serpent avec les flèches du clavier ou ZQSD</p></li>
+                        <li><p>Fais grandir le serpent en mangeant des pommes</p></li>
+                        <li><p>Ne te mords pas la queue, tu perdrais</p></li>
+                        <li><p>N'essaie pas de sortir du terrain, la partie recommencerait</p></li>
+                        <li><p>Attention aux obstacles s'il y en a, ils sont là pour te faire perdre</p></li>
+                    </ol>
+                </p>
+            </div>
+            <div id="levels">
+                <button id="level-1" class="level-button" type="button"><span>Facile</span></button>
+                <button id="level-2" class="level-button" type="button"><span>Moyen</span></button>
+                <button id="level-3" class="level-button" type="button"><span>Difficile</span></button>
+            </div>
+        </div>
+
+
+        <!-- <canvas id="canvas">Canvas is not supported in your browser.</canvas> -->
+        <!-- Footer qui contiendra le menu -->
+        <footer class="container-f"></footer>
+        <script src="game.js"></script>
+        <script src="darkmode.js"></script>
+        <!-- <script src="fireworks.js"></script> -->
+    </body>
 </html>
