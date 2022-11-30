@@ -38,17 +38,20 @@
         <div class="welcome">
             <div class="explanations">
                 <h2>Comment jouer ?</h2>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id
-                    iusto dicta obcaecati, porro omnis doloribus facere
-                    aspernatur minus eaque, suscipit natus tempore, ab magni.
-                    Ipsam tempore temporibus est corporis non.
+                <p id="introduction">
+                    <ol type="1" id="rules">
+                        <li><p>Dirige le serpent avec les flèches du clavier ou ZQSD</p></li>
+                        <li><p>Fais grandir le serpent en mangeant des pommes</p></li>
+                        <li><p>Ne te mords pas la queue, tu perdrais</p></li>
+                        <li><p>N'essaie pas de sortir du terrain, la partie recommencerait</p></li>
+                        <li><p>Attention aux obstacles s'il y en a, ils sont là pour te faire perdre</p></li>
+                    </ol>
                 </p>
             </div>
-            <div class="levels">
-                <button id="level-1" type="button">Easy</button>
-                <button id="level-2" type="button">Medium</button>
-                <button id="level-3" type="button">Hard</button>
+            <div id="levels">
+                <button id="level-1" class="level-button" type="button"><span>Easy</span></button>
+                <button id="level-2" class="level-button" type="button"><span>Medium</span></button>
+                <button id="level-3" class="level-button" type="button"><span>Hard</span></button>
             </div>
         </div>
         <!-- <canvas id="canvas">Canvas is not supported in your browser.</canvas> -->

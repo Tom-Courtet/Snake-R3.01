@@ -137,7 +137,7 @@ function startGame() {
     function restart_game(score) {
         if (score < tileCount ** 2) {
             // alert("Score final : " + score);
-            alert("Score final :" + score);
+            alert("Score final : " + score);
         } else {
             alert("Vous avez gagné! Bravo");
         }

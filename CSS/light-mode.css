@@ -32,6 +32,10 @@
     font-family: "Creators font";
     src: url("../Fonts/InsaniBurger/Insanibc.ttf");
 }
+@font-face {
+    font-family: "Rules font";
+    src: url("../Fonts/Cocogoose/Cocogoose.ttf") format("truetype");
+}
 
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Header css */
@@ -126,7 +130,7 @@ body {
     justify-content: space-between;
     height: 100vh;
     width: 100vw;
-    background-color: var(--ufo-green);
+    background-color: var(--peace);
 }
 
 .canvas {
@@ -135,6 +139,60 @@ body {
 
 .welcome {
     width: 50vw;
+}
+
+#introduction {
+    font-family: "Rules font";
+}
+li {
+    font-weight: 900;
+}
+li p {
+    font-family: "Rules font";
+}
+
+#levels {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.level-button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: var(--lime-soap);
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    width: 100px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.level-button span {
+    pointer-events: none;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+.level-button span:after {
+    content: "\00bb";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+.level-button:hover span {
+    padding-right: 25px;
+}
+.level-button:hover span:after {
+    opacity: 1;
+    right: 0;
 }
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 /* Footer css */
@@ -149,8 +207,7 @@ footer {
     align-items: center;
 }
 
-
 /* Autres */
 .invisible {
-    display:none;
+    display: none;
 }
