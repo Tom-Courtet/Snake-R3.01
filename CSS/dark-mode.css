@@ -110,7 +110,7 @@
     border-radius: 1rem;
     position: relative;
 }
-i {
+#switch i {
     position: absolute;
     left: 0.5rem;
     color: yellow;
