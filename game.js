@@ -53,14 +53,14 @@ window.addEventListener('hashchange', () => {
 function setLevel(num) {
     const url = "json/" + num + ".json";
     fetch(url)
-        .then(function(response) {
+        .then(function (response) {
             if (response.ok) {
                 return response.json();
             } else {
-            throw ("Error " + response.status);
+                throw "Error " + response.status;
             }
         })
-        .then (function(data) {
+        .then(function (data) {
             document.querySelector(".welcome").classList.add("invisible");
 
             // création du canvas
@@ -83,6 +83,7 @@ function setLevel(num) {
             console.log(err);
         });
 }
+
 
 //------------------------------------------------------------------------------
 //
@@ -117,6 +118,12 @@ function startGame() {
     let eColor = "#22C55E";
 
     // Indique la direction du serpent
+
+    const milieu = Math.floor(tileCount / 2);
+
+    /* -------------------------------------------------------- */
+    //VARIABLES
+    /* -------------------------------------------------------- */
     let xVelocity = 0;
     let yVelocity = 0;
 
@@ -166,7 +173,7 @@ function startGame() {
             foodCount = 1;
         }
         moveSnake();
-        if(bitingTail() || hittingWall()) restart_game(snake.length - 3);
+        if (bitingTail() || hittingWall()) restart_game(snake.length - 3);
         refreshWorld();
         drawWorld();
         drawScore();
@@ -258,7 +265,7 @@ function startGame() {
      * @param {none}
      */
     function refreshWorld() {
-        for(let i = 0; i < world.length; i++) {
+        for (let i = 0; i < world.length; i++) {
             for (let j = 0; j < world.length; j++) {
                 // Toutes les cases sont mises à "EMPTY"
                 world[i][j] = EMPTY;
@@ -269,9 +276,7 @@ function startGame() {
             if(k === snake.length - 1) {
                 // C'est la tête
                 world[snake[k][0]][snake[k][1]] = HEAD;
-            }
-            else {
-                // C'est un morceau de la queue
+            } else {
                 world[snake[k][0]][snake[k][1]] = QUEUE;
             }
         }
