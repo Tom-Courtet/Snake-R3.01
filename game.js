@@ -237,7 +237,6 @@ function startGame() {
                 spawnFood();
             } 
         }
-        console.log(yFood + ' ' + xFood);
         for(let i = 0; i < walls.length; i ++){
             if(walls[i][0] === yFood && walls[i][1] === xFood) {
                 spawnFood();
