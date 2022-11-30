@@ -56,7 +56,6 @@
     justify-content: space-between;
     height: 10vh;
     width: 100%;
-    background: linear-gradient(#23ad5c, var(--ufo-green));
     overflow: clip;
 }
 
@@ -133,7 +132,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content:space-between;
     height: 100vh;
     width: 100vw;
     background-color: var(--peace);
@@ -145,7 +144,17 @@ body {
 
 /* rules section css */
 .welcome {
-    width: 50vw;
+    width: 30vw;
+    background-color: #0369A1;
+    padding:15px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+a {
+    color: black;
+    text-decoration: none;
 }
 #introduction {
     font-family: "Rules font";
@@ -167,7 +176,7 @@ li p {
 .level-button {
     display: inline-block;
     border-radius: 4px;
-    background-color: var(--lime-soap);
+    background-color: #22C55E;
     border: none;
     color: #ffffff;
     text-align: center;
@@ -206,7 +215,6 @@ li p {
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 footer {
-    background-color: yellow;
     height: 7.5vh;
     width: 100%;
     display: flex;
