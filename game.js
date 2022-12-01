@@ -13,8 +13,8 @@ var walls;
 const levels = document.getElementsByTagName("button");
 
 // Méthode déclenchée lors de l'appui sur un bouton
-const buttonPressed = e => {
-    switch(e.target.id) {
+const buttonPressed = (e) => {
+    switch (e.target.id) {
         case "level-1":
         case "level-2":
         case "level-3":
@@ -23,7 +23,7 @@ const buttonPressed = e => {
         default:
             break;
     }
-}
+};
 
 // Ajout des écouteurs sur les boutons
 for (let button of levels) {
@@ -33,21 +33,30 @@ for (let button of levels) {
 // Change le hash dans le lien avec le niveau correspondant
 function changeHash(level) {
     var url_ob = new URL(document.URL);
-    url_ob.hash = '#' + level;
+    url_ob.hash = "#" + level;
 
-    // new url
+    // Nouvelle url
     var new_url = url_ob.href;
 
-    // change the current url
+    if(document.location.href === new_url) {
+        // L'URL est déjà avec le niveau choisi : on bypass l'écouteur hashchange
+        setLevel(level);
+    }
+
+    // Changement de l'URL
     document.location.href = new_url;
 }
 
 // Ecouteur sur le changement de hash dans le lien
-window.addEventListener('hashchange', () => {
-    if(location.hash !== "") {
-        setLevel(location.hash.replace("#", ""));
-    }
-}, false);
+window.addEventListener(
+    "hashchange",
+    () => {
+        if (location.hash !== "") {
+            setLevel(location.hash.replace("#", ""));
+        }
+    },
+    false
+);
 
 // Récupération des données du niveau choisi (après changement du hash) et initialisation des variables
 function setLevel(num) {
@@ -84,6 +93,14 @@ function setLevel(num) {
         });
 }
 
+// Si on n'a pas déjà de variable pour le record, on la crée
+if (localStorage.getItem("meilleurScore") === null) {
+    localStorage.setItem("meilleurScore", 0);
+}
+
+// On affiche le meilleur score
+document.getElementById("meilleurScore").innerHTML =
+    localStorage.getItem("meilleurScore");
 
 //------------------------------------------------------------------------------
 //
@@ -112,7 +129,7 @@ function startGame() {
 
     // Image utilisée pour dessiner des élements
     sprite = new Image();
-    sprite.src = '/sprite.png';
+    sprite.src = "/sprite.png";
 
     // Couleurs
     let eColor = "#22C55E";
@@ -135,7 +152,7 @@ function startGame() {
     let snake = [
         [milieu, milieu + 2],
         [milieu, milieu + 1],
-        [milieu, milieu]
+        [milieu, milieu],
     ];
 
     // Initialisation du tableau world avec le nombre de cases du niveau
@@ -159,33 +176,35 @@ function startGame() {
      * Gère toutes les fonctions du jeu. Se répète périodiquement
      * @param {none}
      */
-     function drawGame() {
+    function drawGame() {
         if (foodCount === 0) {
             spawnFood();
             foodCount = 1;
         }
         moveSnake();
-        if (bitingTail() || hittingWall()) restart_game(snake.length - 3);
+        if (bitingTail() || hittingWall()) {
+            restart_game(snake.length - 3);
+        }
         refreshWorld();
         drawWorld();
         drawScore();
-        setTimeout(drawGame, 1000 / refresh);
+        let timeOut = setTimeout(drawGame, 1000 / refresh);
     }
 
     /**
      * Fait apparaître de la nourriture aléatoirement
      * @param {none}
      */
-     function spawnFood() {
+    function spawnFood() {
         xFood = Math.floor(Math.random() * tileCount);
         yFood = Math.floor(Math.random() * tileCount);
         for (let i = 0; i < snake.length; i++) {
             if (snake[i][0] === yFood && snake[i][1] === xFood) {
                 spawnFood();
-            } 
+            }
         }
-        for(let i = 0; i < walls.length; i ++){
-            if(walls[i][0] === yFood && walls[i][1] === xFood) {
+        for (let i = 0; i < walls.length; i++) {
+            if (walls[i][0] === yFood && walls[i][1] === xFood) {
                 spawnFood();
             }
         }
@@ -196,13 +215,22 @@ function startGame() {
      * S'occupe du déplacement du serpent
      * @param {none}
      */
-     function moveSnake() {
+    function moveSnake() {
         if (yVelocity !== 0) {
             // Direction : vers le haut et vers le bas
             // Vérification si le déplacement est possible et si l'on ne sort pas du monde
-            if (snake[snake.length - 1][1] + yVelocity >= 0 && snake[snake.length - 1][1] + yVelocity < tileCount) {
-                snake.push([snake[snake.length - 1][0], snake[snake.length - 1][1] + yVelocity]);
-                if (snake[snake.length - 1][0] != yFood || snake[snake.length - 1][1] != xFood) {
+            if (
+                snake[snake.length - 1][1] + yVelocity >= 0 &&
+                snake[snake.length - 1][1] + yVelocity < tileCount
+            ) {
+                snake.push([
+                    snake[snake.length - 1][0],
+                    snake[snake.length - 1][1] + yVelocity,
+                ]);
+                if (
+                    snake[snake.length - 1][0] != yFood ||
+                    snake[snake.length - 1][1] != xFood
+                ) {
                     snake.shift();
                 } else {
                     world[xFood][yFood] = EMPTY;
@@ -212,9 +240,18 @@ function startGame() {
         } else if (xVelocity !== 0) {
             // Direction : vers la gauche et vers la droite
             // Vérification si le déplacement est possible et si l'on ne sort pas du monde
-            if (snake[snake.length - 1][0] + xVelocity >= 0 && snake[snake.length - 1][0] + xVelocity < tileCount) {
-                snake.push([snake[snake.length - 1][0] + xVelocity, snake[snake.length - 1][1]]);
-                if (snake[snake.length - 1][0] != yFood || snake[snake.length - 1][1] != xFood) {
+            if (
+                snake[snake.length - 1][0] + xVelocity >= 0 &&
+                snake[snake.length - 1][0] + xVelocity < tileCount
+            ) {
+                snake.push([
+                    snake[snake.length - 1][0] + xVelocity,
+                    snake[snake.length - 1][1],
+                ]);
+                if (
+                    snake[snake.length - 1][0] != yFood ||
+                    snake[snake.length - 1][1] != xFood
+                ) {
                     // Pas de nourriture mangée : on raccourcit le serpent
                     snake.shift();
                 } else {
@@ -231,10 +268,14 @@ function startGame() {
      * @returns {Boolean} true si le serpent est en contact avec une partie de sa queue, false sinon
      */
     function bitingTail() {
-        for(let i = 0; i < snake.length; i++) {
-            for(let j = 0; j < snake.length; j++) {
-                if(i != j) {
-                    if(snake[i][0] === snake[j][0] && snake[i][1] === snake[j][1]) return true;
+        for (let i = 0; i < snake.length; i++) {
+            for (let j = 0; j < snake.length; j++) {
+                if (i != j) {
+                    if (
+                        snake[i][0] === snake[j][0] &&
+                        snake[i][1] === snake[j][1]
+                    )
+                        return true;
                 }
             }
         }
@@ -246,12 +287,16 @@ function startGame() {
      * @returns {Boolean} true si le serpent est en contact avec un mur, false sinon
      */
     function hittingWall() {
-        for(let i = 0; i < walls.length; i++) {
-            if(snake[snake.length - 1][0] == walls[i][0] && snake[snake.length - 1][1] == walls[i][1]) return true;
+        for (let i = 0; i < walls.length; i++) {
+            if (
+                snake[snake.length - 1][0] == walls[i][0] &&
+                snake[snake.length - 1][1] == walls[i][1]
+            )
+                return true;
         }
         return false;
     }
-    
+
     /**
      * Mets world à jour en fonction du serpent, de la nourriture et des murs
      * @param {none}
@@ -263,9 +308,9 @@ function startGame() {
                 world[i][j] = EMPTY;
             }
         }
-        for(let k = 0; k < snake.length; k++) {
+        for (let k = 0; k < snake.length; k++) {
             // On mets le serpent au bon endroit dans world
-            if(k === snake.length - 1) {
+            if (k === snake.length - 1) {
                 // C'est la tête
                 world[snake[k][0]][snake[k][1]] = HEAD;
             } else {
@@ -274,9 +319,9 @@ function startGame() {
         }
         // On met la nourriture au bon endroit
         world[yFood][xFood] = FOOD;
-        if(walls.length > 0) {
+        if (walls.length > 0) {
             // Il y a des murs définis dans le json et on les place
-            for(i = 0 ; i < walls.length ; i++) {
+            for (i = 0; i < walls.length; i++) {
                 let x = walls[i][0];
                 let y = walls[i][1];
                 world[y][x] = WALL;
@@ -299,34 +344,59 @@ function startGame() {
                     case "Q":
                         // Queue
                         context.fillStyle = eColor;
-                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        context.fillRect(
+                            i * tileSize,
+                            j * tileSize,
+                            tileSize,
+                            tileSize
+                        );
                         drawFromSprite("Q", i, j);
                         break;
                     case "H":
                         // Tête
                         context.fillStyle = eColor;
-                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        context.fillRect(
+                            i * tileSize,
+                            j * tileSize,
+                            tileSize,
+                            tileSize
+                        );
                         drawFromSprite("H", i, j);
                         break;
                     case "F":
                         // Nourriture
                         context.fillStyle = eColor;
-                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        context.fillRect(
+                            i * tileSize,
+                            j * tileSize,
+                            tileSize,
+                            tileSize
+                        );
                         drawFromSprite("F", i, j);
                         break;
                     case "E":
                         // Vide
                         context.fillStyle = eColor;
-                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        context.fillRect(
+                            i * tileSize,
+                            j * tileSize,
+                            tileSize,
+                            tileSize
+                        );
                         break;
                     case "W":
                         // Mur
-                        context.fillStyle = "#747d8c";
-                        context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        context.fillStyle = eColor;
+                        context.fillRect(
+                            i * tileSize,
+                            j * tileSize,
+                            tileSize,
+                            tileSize
+                        );
+                        drawFromSprite("W", i, j);
                     default:
                         break;
                 }
-                
             }
         }
     }
@@ -341,6 +411,10 @@ function startGame() {
         var nextSnakePart;
 
         switch (part) {
+            case "W":
+                tx = 2;
+                ty = 3;
+                break;
             case "F":
                 // Nourriture
                 tx = 0;
@@ -355,24 +429,30 @@ function startGame() {
                     // Vers le haut
                     tx = 3;
                     ty = 0;
-                } else if (snake[currentSnakePart][0] > snake[prevSnakePart][0]) {
+                } else if (
+                    snake[currentSnakePart][0] > snake[prevSnakePart][0]
+                ) {
                     // Vers la droite
                     tx = 4;
                     ty = 0;
-                } else if (snake[currentSnakePart][0] < snake[prevSnakePart][0]) {
+                } else if (
+                    snake[currentSnakePart][0] < snake[prevSnakePart][0]
+                ) {
                     // Vers la gauche
                     tx = 3;
                     ty = 1;
-                } else if (snake[currentSnakePart][1] > snake[prevSnakePart][1]) {
+                } else if (
+                    snake[currentSnakePart][1] > snake[prevSnakePart][1]
+                ) {
                     // Vers le bas
                     tx = 4;
                     ty = 1;
                 }
                 break;
             case "Q":
-                for(k = 0; k < snake.length; k++) {
+                for (k = 0; k < snake.length; k++) {
                     // On cherche quel morceau de la queue est concerné
-                    if(i === snake[k][0] && j === snake[k][1]) {
+                    if (i === snake[k][0] && j === snake[k][1]) {
                         prevSnakePart = k - 1;
                         currentSnakePart = k;
                         nextSnakePart = k + 1;
@@ -380,55 +460,104 @@ function startGame() {
                 }
                 if (currentSnakePart === 0) {
                     // C'est le bout de la queue qui est concerné
-                    if (snake[nextSnakePart][0] === snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
+                    if (
+                        snake[nextSnakePart][0] ===
+                            snake[currentSnakePart][0] &&
+                        snake[nextSnakePart][1] < snake[currentSnakePart][1]
+                    ) {
                         // Vers le haut
                         tx = 3;
                         ty = 2;
-                    } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] === snake[currentSnakePart][1]) {
+                    } else if (
+                        snake[nextSnakePart][0] > snake[currentSnakePart][0] &&
+                        snake[nextSnakePart][1] === snake[currentSnakePart][1]
+                    ) {
                         // Vers la droite
                         tx = 4;
                         ty = 2;
-                    } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] === snake[currentSnakePart][1]) {
+                    } else if (
+                        snake[nextSnakePart][0] < snake[currentSnakePart][0] &&
+                        snake[nextSnakePart][1] === snake[currentSnakePart][1]
+                    ) {
                         // Vers la gauche
                         tx = 3;
                         ty = 3;
-                    } else if (snake[nextSnakePart][0] === snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                    } else if (
+                        snake[nextSnakePart][0] ===
+                            snake[currentSnakePart][0] &&
+                        snake[nextSnakePart][1] > snake[currentSnakePart][1]
+                    ) {
                         // Vers le bas
                         tx = 4;
                         ty = 3;
                     }
                 } else {
                     // C'est autre chose que le bout de la queue
-                    if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][0] > snake[currentSnakePart][0]
-                        || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
+                    if (
+                        (snake[nextSnakePart][0] < snake[currentSnakePart][0] &&
+                            snake[prevSnakePart][0] >
+                                snake[currentSnakePart][0]) ||
+                        (snake[prevSnakePart][0] < snake[currentSnakePart][0] &&
+                            snake[nextSnakePart][0] >
+                                snake[currentSnakePart][0])
+                    ) {
                         // De gauche à droite
-                        tx = 1; 
+                        tx = 1;
                         ty = 0;
-                    }else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][1] > snake[currentSnakePart][1]
-                        || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                    } else if (
+                        (snake[nextSnakePart][1] < snake[currentSnakePart][1] &&
+                            snake[prevSnakePart][1] >
+                                snake[currentSnakePart][1]) ||
+                        (snake[prevSnakePart][1] < snake[currentSnakePart][1] &&
+                            snake[nextSnakePart][1] >
+                                snake[currentSnakePart][1])
+                    ) {
                         // Du haut vers le bas
-                        tx = 2; 
+                        tx = 2;
                         ty = 1;
-                    } else if (snake[nextSnakePart][0] < snake[currentSnakePart][0] && snake[prevSnakePart][1] > snake[currentSnakePart][1]
-                        || snake[prevSnakePart][0] < snake[currentSnakePart][0] && snake[nextSnakePart][1] > snake[currentSnakePart][1]) {
+                    } else if (
+                        (snake[nextSnakePart][0] < snake[currentSnakePart][0] &&
+                            snake[prevSnakePart][1] >
+                                snake[currentSnakePart][1]) ||
+                        (snake[prevSnakePart][0] < snake[currentSnakePart][0] &&
+                            snake[nextSnakePart][1] >
+                                snake[currentSnakePart][1])
+                    ) {
                         // Angle bas-gauche
-                        tx = 2; 
+                        tx = 2;
                         ty = 0;
-                    } else if (snake[nextSnakePart][1] > snake[currentSnakePart][1] && snake[prevSnakePart][0] > snake[currentSnakePart][0]
-                        || snake[prevSnakePart][1] > snake[currentSnakePart][1] && snake[nextSnakePart][0] > snake[currentSnakePart][0]) {
+                    } else if (
+                        (snake[nextSnakePart][1] > snake[currentSnakePart][1] &&
+                            snake[prevSnakePart][0] >
+                                snake[currentSnakePart][0]) ||
+                        (snake[prevSnakePart][1] > snake[currentSnakePart][1] &&
+                            snake[nextSnakePart][0] >
+                                snake[currentSnakePart][0])
+                    ) {
                         // Angle bas-droit
-                        tx = 0; 
+                        tx = 0;
                         ty = 0;
-                    
-                    } else if (snake[nextSnakePart][1] < snake[currentSnakePart][1] && snake[prevSnakePart][0] < snake[currentSnakePart][0]
-                        || snake[prevSnakePart][1] < snake[currentSnakePart][1] && snake[nextSnakePart][0] < snake[currentSnakePart][0]) {
+                    } else if (
+                        (snake[nextSnakePart][1] < snake[currentSnakePart][1] &&
+                            snake[prevSnakePart][0] <
+                                snake[currentSnakePart][0]) ||
+                        (snake[prevSnakePart][1] < snake[currentSnakePart][1] &&
+                            snake[nextSnakePart][0] <
+                                snake[currentSnakePart][0])
+                    ) {
                         // Angle haut-gauche
-                        tx = 2; 
+                        tx = 2;
                         ty = 2;
-                    } else if (snake[nextSnakePart][0] > snake[currentSnakePart][0] && snake[prevSnakePart][1] < snake[currentSnakePart][1]
-                        || snake[prevSnakePart][0] > snake[currentSnakePart][0] && snake[nextSnakePart][1] < snake[currentSnakePart][1]) {
+                    } else if (
+                        (snake[nextSnakePart][0] > snake[currentSnakePart][0] &&
+                            snake[prevSnakePart][1] <
+                                snake[currentSnakePart][1]) ||
+                        (snake[prevSnakePart][0] > snake[currentSnakePart][0] &&
+                            snake[nextSnakePart][1] <
+                                snake[currentSnakePart][1])
+                    ) {
                         // Angle haut-droit
-                        tx = 0; 
+                        tx = 0;
                         ty = 1;
                     }
                 }
@@ -438,7 +567,17 @@ function startGame() {
         }
         // Sur sprite, on prend 64 pixels sur 64 aux coordonnées tx*64, ty*64
         // On la met aux coordonnées i*tileSize, j*tileSize avec pour taille tileSize sur tileSize
-        context.drawImage(sprite, tx*64, ty*64, 64, 64, i * tileSize, j * tileSize, tileSize, tileSize);
+        context.drawImage(
+            sprite,
+            tx * 64,
+            ty * 64,
+            64,
+            64,
+            i * tileSize,
+            j * tileSize,
+            tileSize,
+            tileSize
+        );
     }
 
     /**
@@ -448,26 +587,38 @@ function startGame() {
     function drawScore() {
         context.fillStyle = "#ffffff";
         context.font = "50px Arial";
-        context.fillText(snake.length - 3, 375/2 - 1/3*50, 375/2 + 1/3*50);
+        context.fillText(
+            snake.length - 3,
+            375 / 2 - (1 / 3) * 50,
+            375 / 2 + (1 / 3) * 50
+        );
     }
 
     /**
      * Fonction lancée lorsqu'une partie se termine
      * @param {Number} score
      */
-     function restart_game(score) {
-        alert('Score final : ' + score);
-
+    function restart_game(score) {
+        alert("Score final : " + score);
         // On efface le hash de l'URL pour ne pas séléctionner de niveau de base
         var uri = window.location.toString();
-        var clean_uri = uri.substring(0,uri.indexOf("#"));
-        window.history.replaceState({},document.title, clean_uri);
-        
+        var clean_uri = uri.substring(0, uri.indexOf("#"));
+        window.history.replaceState({}, document.title, clean_uri);
+        console.log("ah");
+        // Si on a un record, on le met dans le localstorage
+        if (score > localStorage.getItem("meilleurScore"))
+            localStorage.setItem("meilleurScore", score);
+
         // On recharge la page
         document.location.reload(true);
     }
 
-     /**
+    // Ecouteur pour le bouton recommencer la partie
+    document.getElementById("retry").addEventListener("click", function () {
+        restart_game(snake.length - 3);
+    });
+
+    /**
      * Changer la direction en fonction de la touche sur laquelle on appuie
      * @param {event} event
      */
@@ -508,11 +659,6 @@ function startGame() {
                     xVelocity = 1;
                     break;
                 }
-                break;
-            case "Escape":
-                // Pause pour debug
-                yVelocity = 0;
-                xVelocity = 0;
                 break;
             default:
                 break;

@@ -108,7 +108,7 @@
     border-radius: 1rem;
     position: relative;
 }
-i {
+#switch i {
     position: absolute;
     right: 0.5rem;
     color: lightgray;
@@ -132,7 +132,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content:space-between;
+    justify-content: space-between;
     height: 100vh;
     width: 100vw;
     background-color: var(--peace);
@@ -144,14 +144,16 @@ body {
 
 /* rules section css */
 .welcome {
-    width: 30vw;
-    background-color: #0369A1;
-    padding:15px;
+    width: 40vw;
+    background-color: #0369a1;
+    padding: 15px;
     border-radius: 5px;
     text-align: center;
     color: white;
 }
-
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+}
 a {
     color: black;
     text-decoration: none;
@@ -161,6 +163,7 @@ a {
 }
 li {
     font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
 }
 li p {
     font-family: "Rules font";
@@ -176,7 +179,7 @@ li p {
 .level-button {
     display: inline-block;
     border-radius: 4px;
-    background-color: #22C55E;
+    background-color: #22c55e;
     border: none;
     color: #ffffff;
     text-align: center;
@@ -215,13 +218,76 @@ li p {
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 footer {
-    height: 7.5vh;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 10vh;
     width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
+#linkedIns {
+    display: flex;
+    flex-direction: column;
+}
+#linkedIns a {
+    display: flex;
+    flex-direction: column;
+}
+#logo-li {
+    color: white;
+}
+/* Buttons animations */
+#li-buttons {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #22c55e;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: 6px;
+    width: 150px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 3px;
+}
+#li-buttons span {
+    pointer-events: none;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+#li-buttons span:after {
+    content: "\00bb";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+#li-buttons:hover span {
+    padding-right: 25px;
+}
+#li-buttons:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+#retry {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #22c55e;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    width: 150px;
+    cursor: pointer;
+    margin: 5px;
+}
 /* Autres */
 .invisible {
     display: none;

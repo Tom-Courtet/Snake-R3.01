@@ -2,16 +2,24 @@ const switchBox = document.getElementById("switch");
 const icone = document.querySelector("i");
 const link = document.getElementById("css-link");
 switchBox.addEventListener("click", change);
+if (localStorage.getItem("mode") === null) {
+    localStorage.setItem("mode", "light-mode");
+} else if (localStorage.getItem("mode") === "light-mode") {
+    link.href = "CSS/light-mode.css";
+} else if (localStorage.getItem("mode") === "dark-mode") {
+    link.href = "CSS/dark-mode.css";
+}
 
 function change() {
-    console.log("salutt");
-    if (link.href.includes("CSS/light-mode.css")) {
+    if (localStorage.getItem("mode") === "light-mode") {
+        localStorage.setItem("mode", "dark-mode");
         link.href = "CSS/dark-mode.css";
         icone.classList = "fas fa-sun";
         eColor = "#747d8c";
         hColor = "#dfe4ea";
         fColor = "#ff4757";
     } else {
+        localStorage.setItem("mode", "light-mode");
         link.href = "CSS/light-mode.css";
         icone.classList = "fas fa-moon";
         eColor = "lightblue";

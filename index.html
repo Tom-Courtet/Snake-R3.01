@@ -8,11 +8,12 @@
             type="text/css"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
         />
+        <script src="https://kit.fontawesome.com/25d2acd44d.js" crossorigin="anonymous"></script>
         <link
             id="css-link"
             rel="stylesheet"
             type="text/css"
-            href="CSS/light-mode.css"
+            href=""
         />
         <link rel="icon" href="logo.png" />
         <title>Snake</title>
@@ -61,9 +62,15 @@
 
         <!-- <canvas id="canvas">Canvas is not supported in your browser.</canvas> -->
         <!-- Footer qui contiendra le menu -->
-        <footer class="container-f"></footer>
+        <footer class="container-f">
+            <div id="linkedIns">
+                <a href="https://www.linkedin.com/in/elliot-curvat/" target="_blank" rel="noopener noreferrer"><button id="li-buttons" class="linkedin-buttons"><span><i id="logo-li" class="fa-brands fa-linkedin fa-lg"></i>    Elliot</span></button></a>
+                <a href="https://www.linkedin.com/in/tom-courtet-b30436222/" target="_blank" rel="noopener noreferrer"><button id="li-buttons" class="linkedin-buttons"><span><i id="logo-li" class="fa-brands fa-linkedin fa-lg"></i>    Tom</span></button></a>
+            </div>
+            <p class="texteScore"><i class="fa-solid fa-trophy"></i>    Meilleur score : <span id="meilleurScore"></span></p>
+            <button id="retry" class="retry-button" type="button"><i class="fa-solid fa-rotate-right"></i>    Recommencer</button>
+        </footer>
         <script src="game.js"></script>
         <script src="darkmode.js"></script>
-        <!-- <script src="fireworks.js"></script> -->
     </body>
 </html>
