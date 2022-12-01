@@ -2,7 +2,6 @@ const switchBox = document.getElementById("switch");
 const icone = document.querySelector("i");
 const link = document.getElementById("css-link");
 switchBox.addEventListener("click", change);
-console.log(localStorage.getItem("mode"));
 if (localStorage.getItem("mode") === null) {
     localStorage.setItem("mode", "light-mode");
 } else if (localStorage.getItem("mode") === "light-mode") {
@@ -12,7 +11,6 @@ if (localStorage.getItem("mode") === null) {
 }
 
 function change() {
-    console.log(localStorage.getItem("mode"));
     if (localStorage.getItem("mode") === "light-mode") {
         localStorage.setItem("mode", "dark-mode");
         link.href = "CSS/dark-mode.css";
@@ -28,5 +26,4 @@ function change() {
         hColor = "#004721";
         fColor = "red";
     }
-    console.log(localStorage.getItem("mode"));
 }

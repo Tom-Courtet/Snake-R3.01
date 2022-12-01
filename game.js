@@ -35,10 +35,15 @@ function changeHash(level) {
     var url_ob = new URL(document.URL);
     url_ob.hash = "#" + level;
 
-    // new url
+    // Nouvelle url
     var new_url = url_ob.href;
 
-    // change the current url
+    if(document.location.href === new_url) {
+        // L'URL est déjà avec le niveau choisi : on bypass l'écouteur hashchange
+        setLevel(level);
+    }
+
+    // Changement de l'URL
     document.location.href = new_url;
 }
 
@@ -654,11 +659,6 @@ function startGame() {
                     xVelocity = 1;
                     break;
                 }
-                break;
-            case "Escape":
-                // Pause pour debug
-                yVelocity = 0;
-                xVelocity = 0;
                 break;
             default:
                 break;
