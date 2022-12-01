@@ -328,8 +328,9 @@ function startGame() {
                         break;
                     case "W":
                         // Mur
-                        context.fillStyle = "#747d8c";
+                        context.fillStyle = eColor;
                         context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                        drawFromSprite("W", i, j);
                     default:
                         break;
                 }
@@ -348,6 +349,10 @@ function startGame() {
         var nextSnakePart;
 
         switch (part) {
+            case "W":
+                tx = 2;
+                ty = 3;
+                break;
             case "F":
                 // Nourriture
                 tx = 0;
