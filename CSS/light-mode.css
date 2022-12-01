@@ -144,7 +144,7 @@ body {
 
 /* rules section css */
 .welcome {
-    width: 30vw;
+    width: 40vw;
     background-color: #0369a1;
     padding: 15px;
     border-radius: 5px;
@@ -218,22 +218,24 @@ li p {
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 
 footer {
+    font-family: Arial, Helvetica, sans-serif;
     height: 7.5vh;
     width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
+
 #linkedIns {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 #linkedIns a {
     display: flex;
     flex-direction: row;
 }
 #logo-li {
-    color: wheat;
+    color: white;
 }
 /* Buttons animations */
 #li-buttons {
@@ -245,7 +247,7 @@ footer {
     text-align: center;
     font-size: 16px;
     padding: 10px;
-    width: 100px;
+    width: 150px;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
@@ -271,6 +273,20 @@ footer {
 #li-buttons:hover span:after {
     opacity: 1;
     right: 0;
+}
+
+#retry {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #22c55e;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    width: 150px;
+    cursor: pointer;
+    margin: 5px;
 }
 /* Autres */
 .invisible {

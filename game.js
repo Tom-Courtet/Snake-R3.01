@@ -84,6 +84,13 @@ function setLevel(num) {
         });
 }
 
+// Si on n'a pas déjà de variable pour le record, on la crée
+if (localStorage.getItem('meilleurScore') === null) {
+    localStorage.setItem('meilleurScore', 0);
+}
+
+// On affiche le meilleur score
+document.getElementById("meilleurScore").innerHTML = localStorage.getItem('meilleurScore');
 
 //------------------------------------------------------------------------------
 //
@@ -462,10 +469,18 @@ function startGame() {
         var uri = window.location.toString();
         var clean_uri = uri.substring(0,uri.indexOf("#"));
         window.history.replaceState({},document.title, clean_uri);
-        
+    
+        // Si on a un record, on le met dans le localstorage
+        if (score > localStorage.getItem('meilleurScore')) localStorage.setItem('meilleurScore', score);
+
         // On recharge la page
         document.location.reload(true);
     }
+
+    // Ecouteur pour le bouton recommencer la partie
+    document.getElementById("retry").addEventListener("click", function() {
+        restart_game(snake.length - 3);
+    });
 
      /**
      * Changer la direction en fonction de la touche sur laquelle on appuie

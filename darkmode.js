@@ -4,7 +4,6 @@ const link = document.getElementById("css-link");
 switchBox.addEventListener("click", change);
 
 function change() {
-    console.log("salutt");
     if (link.href.includes("CSS/light-mode.css")) {
         link.href = "CSS/dark-mode.css";
         icone.classList = "fas fa-sun";
