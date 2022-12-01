@@ -219,7 +219,7 @@ li p {
 
 footer {
     font-family: Arial, Helvetica, sans-serif;
-    height: 7.5vh;
+    height: 10vh;
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -228,11 +228,11 @@ footer {
 
 #linkedIns {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 #linkedIns a {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 #logo-li {
     color: white;
@@ -246,11 +246,11 @@ footer {
     color: #ffffff;
     text-align: center;
     font-size: 16px;
-    padding: 10px;
+    padding: 6px;
     width: 150px;
     transition: all 0.5s;
     cursor: pointer;
-    margin: 5px;
+    margin: 3px;
 }
 #li-buttons span {
     pointer-events: none;
