@@ -128,7 +128,7 @@ function startGame() {
     document.body.addEventListener("keydown", keyDown);
 
     // Image utilisée pour dessiner des élements
-    sprite = new Image();
+    var sprite = new Image();
     sprite.src = "/sprite.png";
 
     // Couleurs
@@ -188,7 +188,7 @@ function startGame() {
         refreshWorld();
         drawWorld();
         drawScore();
-        let timeOut = setTimeout(drawGame, 1000 / refresh);
+        setTimeout(drawGame, 1000 / refresh);
     }
 
     /**
@@ -228,8 +228,8 @@ function startGame() {
                     snake[snake.length - 1][1] + yVelocity,
                 ]);
                 if (
-                    snake[snake.length - 1][0] != yFood ||
-                    snake[snake.length - 1][1] != xFood
+                    snake[snake.length - 1][0] !== yFood ||
+                    snake[snake.length - 1][1] !== xFood
                 ) {
                     snake.shift();
                 } else {
@@ -249,8 +249,8 @@ function startGame() {
                     snake[snake.length - 1][1],
                 ]);
                 if (
-                    snake[snake.length - 1][0] != yFood ||
-                    snake[snake.length - 1][1] != xFood
+                    snake[snake.length - 1][0] !== yFood ||
+                    snake[snake.length - 1][1] !== xFood
                 ) {
                     // Pas de nourriture mangée : on raccourcit le serpent
                     snake.shift();
@@ -270,7 +270,7 @@ function startGame() {
     function bitingTail() {
         for (let i = 0; i < snake.length; i++) {
             for (let j = 0; j < snake.length; j++) {
-                if (i != j) {
+                if (i !== j) {
                     if (
                         snake[i][0] === snake[j][0] &&
                         snake[i][1] === snake[j][1]
@@ -289,8 +289,8 @@ function startGame() {
     function hittingWall() {
         for (let i = 0; i < walls.length; i++) {
             if (
-                snake[snake.length - 1][0] == walls[i][0] &&
-                snake[snake.length - 1][1] == walls[i][1]
+                snake[snake.length - 1][0] === walls[i][0] &&
+                snake[snake.length - 1][1] === walls[i][1]
             )
                 return true;
         }
@@ -321,7 +321,7 @@ function startGame() {
         world[yFood][xFood] = FOOD;
         if (walls.length > 0) {
             // Il y a des murs définis dans le json et on les place
-            for (i = 0; i < walls.length; i++) {
+            for (let i = 0; i < walls.length; i++) {
                 let x = walls[i][0];
                 let y = walls[i][1];
                 world[y][x] = WALL;
@@ -394,6 +394,7 @@ function startGame() {
                             tileSize
                         );
                         drawFromSprite("W", i, j);
+                        break;
                     default:
                         break;
                 }
@@ -450,7 +451,7 @@ function startGame() {
                 }
                 break;
             case "Q":
-                for (k = 0; k < snake.length; k++) {
+                for (let k = 0; k < snake.length; k++) {
                     // On cherche quel morceau de la queue est concerné
                     if (i === snake[k][0] && j === snake[k][1]) {
                         prevSnakePart = k - 1;
@@ -627,7 +628,7 @@ function startGame() {
             case "ArrowDown":
             case "s":
             case "S":
-                if (yVelocity != -1) {
+                if (yVelocity !== -1) {
                     xVelocity = 0;
                     yVelocity = 1;
                     break;
@@ -636,7 +637,7 @@ function startGame() {
             case "ArrowUp":
             case "z":
             case "Z":
-                if (yVelocity != 1) {
+                if (yVelocity !== 1) {
                     xVelocity = 0;
                     yVelocity = -1;
                     break;
@@ -645,7 +646,7 @@ function startGame() {
             case "ArrowLeft":
             case "q":
             case "Q":
-                if (xVelocity != 1) {
+                if (xVelocity !== 1) {
                     yVelocity = 0;
                     xVelocity = -1;
                     break;
@@ -654,7 +655,7 @@ function startGame() {
             case "ArrowRight":
             case "d":
             case "D":
-                if (xVelocity != -1) {
+                if (xVelocity !== -1) {
                     yVelocity = 0;
                     xVelocity = 1;
                     break;
