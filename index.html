@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <!-- lien pour les icône du dark mode -->
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-        />
-        <script src="https://kit.fontawesome.com/25d2acd44d.js" crossorigin="anonymous"></script>
-        <link
-            id="css-link"
-            rel="stylesheet"
-            type="text/css"
-            href=""
-        />
-        <link rel="icon" href="logo.png" />
-        <title>Snake</title>
-    </head>
-    <body class="container-b">
 
-        <header id="container-h">
-            <section id="creators" class="block-h">
-                <span class="creators">Elliot CURVAT</span>
-                <span class="creators">Tom COURTET</span>
-            </section>
-            <section id="title" class="block-h">
-                <a href="index.html"><h1>SnakE</h1></a>
-            </section>
-            <section id="dm-button" class="block-h">
-                <div id="switch">
-                    <i class="fas fa-moon"></i>
-                    <div class="btn"></div>
-                </div>
-            </section>
-        </header>
+<head>
+    <meta charset="UTF-8" />
+    <!-- lien pour les icône du dark mode -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <script src="https://kit.fontawesome.com/25d2acd44d.js" crossorigin="anonymous"></script>
+    <link id="css-link" rel="stylesheet" type="text/css" href="CSS/light-mode.css" />
+    <link rel="icon" href="logo.png" />
+    <title>Snake</title>
+</head>
 
+<body class="container-b">
 
-        <div class="canvas"></div>
-        <img src="sprite.png" id="sprite" style="display: none;">
-        <div class="welcome">
-            <div class="explanations">
-                <h2>Comment jouer ?</h2>
-                <p id="introduction">
-                    <ol type="1" id="rules">
-                        <li><p>Dirige le serpent avec les flèches du clavier ou ZQSD</p></li>
-                        <li><p>Fais grandir le serpent en mangeant des pommes</p></li>
-                        <li><p>Ne te mords pas la queue, tu perdrais</p></li>
-                        <li><p>N'essaie pas de sortir du terrain, la partie recommencerait</p></li>
-                        <li><p>Attention aux obstacles s'il y en a, ils sont là pour te faire perdre</p></li>
-                    </ol>
-                </p>
+    <header id="container-h">
+        <section id="creators" class="block-h">
+            <span class="creators">Elliot CURVAT</span>
+            <span class="creators">Tom COURTET</span>
+        </section>
+        <section id="title" class="block-h">
+            <a href="index.html">
+                <h1>SnakE</h1>
+            </a>
+        </section>
+        <section id="dm-button" class="block-h">
+            <div id="switch">
+                <i class="fas fa-moon"></i>
+                <div class="btn"></div>
             </div>
-            <div id="levels">
-                <button id="level-1" class="level-button" type="button"><span>Facile</span></button>
-                <button id="level-2" class="level-button" type="button"><span>Moyen</span></button>
-                <button id="level-3" class="level-button" type="button"><span>Difficile</span></button>
-            </div>
+        </section>
+    </header>
+
+
+    <div class="canvas"></div>
+    <img src="sprite.png" id="sprite" style="display: none;">
+    <div class="welcome">
+        <div class="explanations">
+            <h2>Comment jouer ?</h2>
+            <p id="introduction">
+            <ol type="1" id="rules">
+                <li>
+                    <p>Dirige le serpent avec les flèches du clavier ou ZQSD</p>
+                </li>
+                <li>
+                    <p>Fais grandir le serpent en mangeant des pommes</p>
+                </li>
+                <li>
+                    <p>Ne te mords pas la queue, tu perdrais</p>
+                </li>
+                <li>
+                    <p>N'essaie pas de sortir du terrain, la partie recommencerait</p>
+                </li>
+                <li>
+                    <p>Attention aux obstacles s'il y en a, ils sont là pour te faire perdre</p>
+                </li>
+            </ol>
+            </p>
         </div>
+        <div id="levels">
+            <button id="level-1" class="level-button" type="button"><span>Facile</span></button>
+            <button id="level-2" class="level-button" type="button"><span>Moyen</span></button>
+            <button id="level-3" class="level-button" type="button"><span>Difficile</span></button>
+        </div>
+    </div>
 
 
-        <!-- <canvas id="canvas">Canvas is not supported in your browser.</canvas> -->
-        <!-- Footer qui contiendra le menu -->
-        <footer class="container-f">
-            <div id="linkedIns">
-                <a href="https://www.linkedin.com/in/elliot-curvat/" target="_blank" rel="noopener noreferrer"><button id="li-buttons" class="linkedin-buttons"><span><i id="logo-li" class="fa-brands fa-linkedin fa-lg"></i>    Elliot</span></button></a>
-                <a href="https://www.linkedin.com/in/tom-courtet-b30436222/" target="_blank" rel="noopener noreferrer"><button id="li-buttons" class="linkedin-buttons"><span><i id="logo-li" class="fa-brands fa-linkedin fa-lg"></i>    Tom</span></button></a>
-            </div>
-            <p class="texteScore"><i class="fa-solid fa-trophy"></i>    Meilleur score : <span id="meilleurScore"></span></p>
-            <button id="retry" class="retry-button" type="button"><i class="fa-solid fa-rotate-right"></i>    Recommencer</button>
-        </footer>
-        <script src="./game.js"></script>
-        <script src="./darkmode.js"></script>
-    </body>
+    <!-- <canvas id="canvas">Canvas is not supported in your browser.</canvas> -->
+    <!-- Footer qui contiendra le menu -->
+    <footer class="container-f">
+        <div id="linkedIns">
+            <a href="https://www.linkedin.com/in/elliot-curvat/" target="_blank" rel="noopener noreferrer"><button
+                    id="li-buttons" class="linkedin-buttons"><span><i id="logo-li"
+                            class="fa-brands fa-linkedin fa-lg"></i> Elliot</span></button></a>
+            <a href="https://www.linkedin.com/in/tom-courtet-b30436222/" target="_blank"
+                rel="noopener noreferrer"><button id="li-buttons" class="linkedin-buttons"><span><i id="logo-li"
+                            class="fa-brands fa-linkedin fa-lg"></i> Tom</span></button></a>
+        </div>
+        <p class="texteScore"><i class="fa-solid fa-trophy"></i> Meilleur score : <span id="meilleurScore"></span></p>
+        <button id="retry" class="retry-button" type="button"><i class="fa-solid fa-rotate-right"></i>
+            Recommencer</button>
+    </footer>
+    <script src="./game.js"></script>
+    <script src="./darkmode.js"></script>
+</body>
+
 </html>
